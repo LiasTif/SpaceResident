@@ -6,23 +6,21 @@ public class Pause : MonoBehaviour
     private GameObject _pauseMenu;
 
     private static bool _paused;
+    private static HUDInputActions _hudInputActions;
 
-    public void Start() => ResumeGame();
+    private void OnEnable() => _hudInputActions.HUD.Pause.Enable();
 
-    private void Update()
+    private void OnDisable() => _hudInputActions.HUD.Pause.Disable();
+
+    private void Awake() => InitHUDInputActions();
+
+    private void InitHUDInputActions()
     {
-        if (Input.GetKeyUp(KeyCode.Escape))
-        {
-            if (_paused)
-                ResumeGame();
-            else
-                PauseGame();
-        }
+        _hudInputActions = new();
+        _hudInputActions.HUD.Pause.performed += context => TogglePause(!_paused);
     }
 
-    private void ResumeGame() => TogglePause(false);
-
-    private void PauseGame() => TogglePause(true);
+    public void ResumeGame() => TogglePause(false);
 
     private void TogglePause(bool pause)
     {
