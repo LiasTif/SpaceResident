@@ -5,12 +5,15 @@ using UnityEngine.UI;
 
 public class ChatSend : MonoBehaviour
 {
+    [Header("Receiving")]
+    [SerializeField]
+    private GameObject _chatContent;
     [SerializeField]
     private TMP_Text _chatTextTemplate;
 
+    [Header("Sending")]
     [SerializeField]
-    private GameObject _chatContent;
-
+    private TMP_InputField _chatInputField;
     [SerializeField]
     private Button _sendButton;
 
@@ -18,7 +21,7 @@ public class ChatSend : MonoBehaviour
     {
         TMP_Text msg = Instantiate(_chatTextTemplate);
         DateTime time = DateTime.Now;
-        msg.text = time.ToString("hh:mmtt") + ": msg";
+        msg.text = time.ToString("hh:mmtt") + $": {_chatInputField.text}";
         msg.transform.SetParent(_chatContent.transform, false);
     }
 }
