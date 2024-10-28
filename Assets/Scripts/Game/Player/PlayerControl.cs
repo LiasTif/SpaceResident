@@ -6,6 +6,8 @@ public class PlayerControl : MonoBehaviour
     private float _movSpeed;
     [SerializeField]
     private float _inertiaStrength;
+    [SerializeField]
+    private BrakeIcon _brakeIcon;
 
     private Rigidbody2D _rb;
     private Vector2 _inputDirection;
@@ -26,6 +28,8 @@ public class PlayerControl : MonoBehaviour
     private void ToggleBraking()
     {
         _isBraking = !_isBraking;
+        _brakeIcon.ChangeStatus(_isBraking);
+
         Debug.Log($"Brake: {_isBraking}");
     }
 
