@@ -23,5 +23,7 @@ public class ChatSend : MonoBehaviour
         DateTime time = DateTime.Now;
         msg.text = time.ToString("hh:mmtt") + $": {_chatInputField.text}";
         msg.transform.SetParent(_chatContent.transform, false);
+
+        Debug.Log($"Received message: {msg.text}");
     }
 }
