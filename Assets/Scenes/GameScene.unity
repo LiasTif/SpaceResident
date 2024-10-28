@@ -791,6 +791,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _movSpeed: 1
   _inertiaStrength: 1
+  _brakeIcon: {fileID: 330508587}
 --- !u!1 &396510268
 GameObject:
   m_ObjectHideFlags: 0
