@@ -15,7 +15,7 @@
                     "initialStateCheck": true
                 },
                 {
-                    "name": "Break",
+                    "name": "Brake",
                     "type": "Button",
                     "id": "1c042f31-8c16-4e38-8c42-f3ae16e55935",
                     "expectedControlType": "Button",
@@ -87,7 +87,7 @@
                     "interactions": "",
                     "processors": "",
                     "groups": "",
-                    "action": "Break",
+                    "action": "Brake",
                     "isComposite": false,
                     "isPartOfComposite": false
                 }
