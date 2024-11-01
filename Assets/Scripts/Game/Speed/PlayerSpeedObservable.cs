@@ -72,6 +72,7 @@ public class PlayerSpeedObservable : MonoBehaviour, ISpeedObservable
 
     private (int, string) ConvertSpeed(float speedInMeters)
     {
+        speedInMeters *= 3600;
         if (speedInMeters <= (int)SpeedThreshold.m)
         {
             return ((int)speedInMeters, SpeedThreshold.m.ToString());
