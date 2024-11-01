@@ -15,6 +15,8 @@ public class PlayerControl : MonoBehaviour
 
     private PlayerInputActions _inputActions;
 
+    public float CurrentSpeed => _rb.velocity.magnitude;
+
     private void Awake()
     {
         _rb = GetComponent<Rigidbody2D>();
