@@ -13,7 +13,7 @@ MonoBehaviour:
   m_Name: HUD_0
   m_EditorClassIdentifier: 
   m_Sprite: {fileID: -1879704881, guid: 6fbbca85ee829ae44a7534f2d060fe15, type: 3}
-  m_Color: {r: 1, g: 1, b: 1, a: 1}
+  m_Color: {r: 1, g: 1, b: 1, a: 0.09803922}
   m_Transform:
     e00: 1
     e01: 0

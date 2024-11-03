@@ -739,6 +739,52 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _brakeIconText: {fileID: 211005777}
+--- !u!1 &350224422
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 350224423}
+  - component: {fileID: 350224424}
+  m_Layer: 0
+  m_Name: SelectedCellHighlight
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &350224423
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 350224422}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 920223923}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &350224424
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 350224422}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 305922a3ed5f54b4c9c7313f95abfc5a, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _tilemap: {fileID: 1619350875}
+  _highlightTile: {fileID: 11400000, guid: ffd37fb8276ab30498ad9af237074222, type: 2}
 --- !u!1 &376666146
 GameObject:
   m_ObjectHideFlags: 0
@@ -1308,7 +1354,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!224 &653750728
 RectTransform:
   m_ObjectHideFlags: 0
@@ -1668,6 +1714,7 @@ Transform:
   - {fileID: 330508586}
   - {fileID: 131711234}
   - {fileID: 1867891834}
+  - {fileID: 350224423}
   m_Father: {fileID: 1988803259}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &999521917
@@ -2252,7 +2299,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &1344782535
 RectTransform:
   m_ObjectHideFlags: 0
@@ -3929,7 +3976,7 @@ RectTransform:
   m_Father: {fileID: 1684309068}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
-  m_AnchorMax: {x: 1, y: 1}
+  m_AnchorMax: {x: 0, y: 0}
   m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 20, y: 20}
   m_Pivot: {x: 0.5, y: 0.5}
@@ -4002,6 +4049,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _playerHUD: {fileID: 653750727}
   _buildingHUD: {fileID: 1344782534}
+  _selectedCellHighlight: {fileID: 350224422}
 --- !u!4 &1867891834
 Transform:
   m_ObjectHideFlags: 0
