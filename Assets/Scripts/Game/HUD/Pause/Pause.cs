@@ -11,7 +11,7 @@ public class Pause : MonoBehaviour
     private void OnEnable() => _hudInputActions.HUD.Pause.Enable();
     private void OnDisable() => _hudInputActions.HUD.Pause.Disable();
 
-    private void Start() => InitHUDInputActions();
+    private void Awake() => InitHUDInputActions();
 
     private void InitHUDInputActions()
     {

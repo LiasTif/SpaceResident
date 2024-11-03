@@ -17,7 +17,7 @@ public class PlayerControl : MonoBehaviour
 
     public float CurrentSpeed => _rb.velocity.magnitude;
 
-    private void Start()
+    private void Awake()
     {
         InitRigidbody();
         InitInputActions();
