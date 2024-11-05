@@ -23,5 +23,8 @@ public class SelectedCellHighlight : MonoBehaviour
         }
     }
 
-    public void ClearHighlight() => _tilemap.SetTile(previousCellPosition, null);
+    public void ClearHighlight()
+    {
+        _tilemap.SetTile(previousCellPosition, null);
+    }
 }
