@@ -129,7 +129,7 @@
       "url": "https://packages.unity.com"
     },
     "com.unity.feature.2d": {
-      "version": "2.0.0",
+      "version": "2.0.1",
       "depth": 0,
       "source": "builtin",
       "dependencies": {
@@ -153,7 +153,7 @@
       "url": "https://packages.unity.com"
     },
     "com.unity.inputsystem": {
-      "version": "1.7.0",
+      "version": "1.11.0",
       "depth": 0,
       "source": "registry",
       "dependencies": {
@@ -180,7 +180,7 @@
       "url": "https://packages.unity.com"
     },
     "com.unity.textmeshpro": {
-      "version": "3.0.6",
+      "version": "3.0.7",
       "depth": 0,
       "source": "registry",
       "dependencies": {
