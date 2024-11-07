@@ -6,6 +6,7 @@ public class BuildingSwitch : MonoBehaviour
     private GameObject _playerHUD;
     [SerializeField]
     private GameObject _buildingHUD;
+
     [SerializeField]
     private GameObject _selectedCellHighlight;
 
