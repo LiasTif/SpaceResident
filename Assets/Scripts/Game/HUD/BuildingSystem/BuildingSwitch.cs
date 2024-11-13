@@ -16,7 +16,7 @@ public class BuildingSwitch : MonoBehaviour
 
     public void Switch() => Switch(!IsBuilding);
 
-    private void Switch(bool isBuilding)
+    public void Switch(bool isBuilding)
     {
         _playerHUD.SetActive(!isBuilding);
         _buildingHUD.SetActive(isBuilding);

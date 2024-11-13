@@ -9,7 +9,16 @@
                     "name": "Pause",
                     "type": "Button",
                     "id": "d055afa1-847d-4421-b2bc-f5cf3067489b",
-                    "expectedControlType": "Button",
+                    "expectedControlType": "",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
+                },
+                {
+                    "name": "BuildingElementsSelection",
+                    "type": "Button",
+                    "id": "4c8647b3-0d1d-4d1c-869f-c5fa1aab187a",
+                    "expectedControlType": "",
                     "processors": "",
                     "interactions": "",
                     "initialStateCheck": false
@@ -24,6 +33,17 @@
                     "processors": "",
                     "groups": "",
                     "action": "Pause",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "b59e6a6c-45ef-44fa-a6f8-5bb885d3d3b9",
+                    "path": "<Keyboard>/b",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "BuildingElementsSelection",
                     "isComposite": false,
                     "isPartOfComposite": false
                 }

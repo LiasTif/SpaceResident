@@ -31,7 +31,16 @@ public partial class @HUDInputActions: IInputActionCollection2, IDisposable
                     ""name"": ""Pause"",
                     ""type"": ""Button"",
                     ""id"": ""d055afa1-847d-4421-b2bc-f5cf3067489b"",
-                    ""expectedControlType"": ""Button"",
+                    ""expectedControlType"": """",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""BuildingElementsSelection"",
+                    ""type"": ""Button"",
+                    ""id"": ""4c8647b3-0d1d-4d1c-869f-c5fa1aab187a"",
+                    ""expectedControlType"": """",
                     ""processors"": """",
                     ""interactions"": """",
                     ""initialStateCheck"": false
@@ -48,6 +57,17 @@ public partial class @HUDInputActions: IInputActionCollection2, IDisposable
                     ""action"": ""Pause"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""b59e6a6c-45ef-44fa-a6f8-5bb885d3d3b9"",
+                    ""path"": ""<Keyboard>/b"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""BuildingElementsSelection"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
                 }
             ]
         }
@@ -57,6 +77,7 @@ public partial class @HUDInputActions: IInputActionCollection2, IDisposable
         // HUD
         m_HUD = asset.FindActionMap("HUD", throwIfNotFound: true);
         m_HUD_Pause = m_HUD.FindAction("Pause", throwIfNotFound: true);
+        m_HUD_BuildingElementsSelection = m_HUD.FindAction("BuildingElementsSelection", throwIfNotFound: true);
     }
 
     ~@HUDInputActions()
@@ -124,11 +145,13 @@ public partial class @HUDInputActions: IInputActionCollection2, IDisposable
     private readonly InputActionMap m_HUD;
     private List<IHUDActions> m_HUDActionsCallbackInterfaces = new List<IHUDActions>();
     private readonly InputAction m_HUD_Pause;
+    private readonly InputAction m_HUD_BuildingElementsSelection;
     public struct HUDActions
     {
         private @HUDInputActions m_Wrapper;
         public HUDActions(@HUDInputActions wrapper) { m_Wrapper = wrapper; }
         public InputAction @Pause => m_Wrapper.m_HUD_Pause;
+        public InputAction @BuildingElementsSelection => m_Wrapper.m_HUD_BuildingElementsSelection;
         public InputActionMap Get() { return m_Wrapper.m_HUD; }
         public void Enable() { Get().Enable(); }
         public void Disable() { Get().Disable(); }
@@ -141,6 +164,9 @@ public partial class @HUDInputActions: IInputActionCollection2, IDisposable
             @Pause.started += instance.OnPause;
             @Pause.performed += instance.OnPause;
             @Pause.canceled += instance.OnPause;
+            @BuildingElementsSelection.started += instance.OnBuildingElementsSelection;
+            @BuildingElementsSelection.performed += instance.OnBuildingElementsSelection;
+            @BuildingElementsSelection.canceled += instance.OnBuildingElementsSelection;
         }
 
         private void UnregisterCallbacks(IHUDActions instance)
@@ -148,6 +174,9 @@ public partial class @HUDInputActions: IInputActionCollection2, IDisposable
             @Pause.started -= instance.OnPause;
             @Pause.performed -= instance.OnPause;
             @Pause.canceled -= instance.OnPause;
+            @BuildingElementsSelection.started -= instance.OnBuildingElementsSelection;
+            @BuildingElementsSelection.performed -= instance.OnBuildingElementsSelection;
+            @BuildingElementsSelection.canceled -= instance.OnBuildingElementsSelection;
         }
 
         public void RemoveCallbacks(IHUDActions instance)
@@ -168,5 +197,6 @@ public partial class @HUDInputActions: IInputActionCollection2, IDisposable
     public interface IHUDActions
     {
         void OnPause(InputAction.CallbackContext context);
+        void OnBuildingElementsSelection(InputAction.CallbackContext context);
     }
 }
