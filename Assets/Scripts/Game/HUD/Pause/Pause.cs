@@ -25,7 +25,6 @@ public class Pause : MonoBehaviour
     {
         _pauseMenu.SetActive(pause);
         _paused = pause;
-        Time.timeScale = pause ? 0.0f : 1.0f;
 
         Debug.Log($"Pause: {pause}");
     }

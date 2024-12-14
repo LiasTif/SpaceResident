@@ -1,30 +1,15 @@
-using UnityEngine;
 using UnityEngine.Tilemaps;
+using UnityEngine;
 
-public class SelectedCellHighlight : MonoBehaviour
+public class SelectedCellHighlight : TileUnderCoursor
 {
+    [Header("Small Tilemap")]
     [SerializeField]
-    private Tilemap _tilemap;
-    [SerializeField]
-    private Tile _highlightTile;
+    private Tilemap _smallTilemap;
 
-    private Vector3Int previousCellPosition;
+    private Tilemap _bigTilemap;
 
-    private void Update()
-    {
-        Vector3 mouseWorldPos = Camera.main.ScreenToWorldPoint(Input.mousePosition);
-        Vector3Int cellPosition = _tilemap.WorldToCell(mouseWorldPos);
+    private void Start() => _bigTilemap = base.Tilemap;
 
-        if (cellPosition != previousCellPosition)
-        {
-            ClearHighlight();
-            _tilemap.SetTile(cellPosition, _highlightTile);
-            previousCellPosition = cellPosition;
-        }
-    }
-
-    public void ClearHighlight()
-    {
-        _tilemap.SetTile(previousCellPosition, null);
-    }
+    public void SwitchTileMap(bool isBig) => Tilemap = isBig ? _bigTilemap : _smallTilemap;
 }

@@ -6,30 +6,49 @@ public class BuildingSwitch : MonoBehaviour
     private GameObject _playerHUD;
     [SerializeField]
     private GameObject _buildingHUD;
-
     [SerializeField]
     private GameObject _selectedCellHighlight;
+    [SerializeField]
+    private GameObject _buildingElementPreView;
+    [SerializeField]
+    private GameObject _buildingElementsSwitch;
 
     public static bool IsBuilding { get; private set; }
 
-    public void Start() => Switch(IsBuilding);
+    public void Start() => Switch(false);
 
     public void Switch() => Switch(!IsBuilding);
 
-    public void Switch(bool isBuilding)
+    private void Switch(bool isBuilding)
     {
         _playerHUD.SetActive(!isBuilding);
         _buildingHUD.SetActive(isBuilding);
-        SwitchSelectedCellHighlight(isBuilding);
+
+        if (IsBuilding)
+            TurnOffBuildingElementsPanel();
+
+        SwitchTileUnderCoursor(isBuilding);
 
         IsBuilding = isBuilding;
     }
 
-    private void SwitchSelectedCellHighlight(bool isBuilding)
+    private void TurnOffBuildingElementsPanel()
     {
-        var s = _selectedCellHighlight.GetComponent<SelectedCellHighlight>();
-        s.ClearHighlight();
+        var b = _buildingElementsSwitch.GetComponent<BuildingElementsSwitch>();
+        b.Switch(false);
+    }
 
-        _selectedCellHighlight.SetActive(isBuilding);
+    public void SwitchTileUnderCoursor(bool isBuilding)
+    {
+        SwitchComponentState(_selectedCellHighlight, isBuilding);
+        SwitchComponentState(_buildingElementPreView, isBuilding);
+    }
+
+    private void SwitchComponentState(GameObject o, bool isBuilding)
+    {
+        var r = o.GetComponent<TileUnderCoursor>();
+        r.ClearTile();
+
+        o.SetActive(isBuilding);
     }
 }

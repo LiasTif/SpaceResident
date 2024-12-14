@@ -1,28 +1,29 @@
 using TMPro;
 using UnityEngine;
 
-public class NewBehaviourScript : MonoBehaviour
+public class BuildingElementsSwitch : MonoBehaviour
 {
     [SerializeField]
-    private GameObject _buildingElementsMenu;
+    private GameObject _buildingElementsPanel;
     [SerializeField]
     private TMP_Text _buildingElementsBtnText;
     [SerializeField]
     private GameObject _buildingSwitch;
 
-    public void Switch()
+    public void Switch() => Switch(!_buildingElementsPanel.activeSelf);
+
+    public void Switch(bool state)
     {
-        bool newState = !_buildingElementsMenu.activeSelf;
-        _buildingElementsMenu.SetActive(newState);
-        ChangeBtnText(newState);
-        BuildingSwitchSetState(newState);
+        _buildingElementsPanel.SetActive(state);
+        ChangeBtnText(state);
+        BuildingSwitchSelectedCellHighlight(!state);
     }
 
-    private void BuildingSwitchSetState(bool newState)
+    private void BuildingSwitchSelectedCellHighlight(bool state)
     {
         var buildingSwitch = _buildingSwitch.GetComponent<BuildingSwitch>();
-        buildingSwitch.Switch(newState);
+        buildingSwitch.SwitchTileUnderCoursor(state);
     }
 
-    public void ChangeBtnText(bool isMenuActive) => _buildingElementsBtnText.text = isMenuActive? "<" : ">";
+    public void ChangeBtnText(bool isMenuActive) => _buildingElementsBtnText.text = isMenuActive ? "<" : ">";
 }
