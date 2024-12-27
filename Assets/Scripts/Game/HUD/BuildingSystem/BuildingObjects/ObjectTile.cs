@@ -1,7 +1,7 @@
 using UnityEngine;
 using UnityEngine.Tilemaps;
 
-public class Door : MonoBehaviour
+public class ObjectTile : MonoBehaviour
 {
     public Tile Tile;
 }

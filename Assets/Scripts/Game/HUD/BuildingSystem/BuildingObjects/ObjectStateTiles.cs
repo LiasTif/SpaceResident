@@ -1,7 +1,7 @@
 using UnityEngine;
 using UnityEngine.Tilemaps;
 
-public abstract class BuildingElementIndex : MonoBehaviour
+public abstract class ObjectStateTiles : MonoBehaviour
 {
     public Tile Single;
     public Tile Straight;
