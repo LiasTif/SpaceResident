@@ -18,10 +18,17 @@ public class BuildingSwitch : MonoBehaviour
     public void Switch()
     {
         SwitchHUDsState();
-        _previewsSwitch.GetComponent<PreviewsSwitch>().Switch();
+        SwitchPreview();
     }
     // використати патерн підписник для виключання інших худів та худу гравця,
     // щоб уникнути накладання декількох худів
+
+    private void SwitchPreview()
+    {
+        var p = _previewsSwitch.GetComponent<PreviewsSwitch>();
+        p.ClearPreview();
+        p.Switch();
+    }
 
     private void SwitchHUDsState()
     {

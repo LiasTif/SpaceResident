@@ -9,12 +9,24 @@ public class PreviewsSwitch : MonoBehaviour
     [SerializeField]
     private GameObject _objectPreviewInitializer;
 
-    private void Awake() => Switch(false);
+    private void Start()
+    {
+        PrimaryInitObjectPreview();
+        Switch(false);
+    }
+
+    private void PrimaryInitObjectPreview()
+    {
+        var s = _selectedObjectPreview.GetComponent<SelectedObjectPreview>();
+        if (s.Tile == null || s.Tilemap == null)
+        {
+            var p = _objectPreviewInitializer.GetComponent<ObjectPreviewInitializer>();
+            p.PrimaryInit(s);
+        }
+    }
 
     public void Switch()
     {
-        PrimaryInitObjectPreview();
-
         if (_highlightPreview.activeSelf && _selectedObjectPreview.activeSelf)
             Switch(false);
         else
@@ -27,13 +39,12 @@ public class PreviewsSwitch : MonoBehaviour
         _selectedObjectPreview.SetActive(state);
     }
 
-    private void PrimaryInitObjectPreview()
+    public void ClearPreview()
     {
+        var h = _highlightPreview.GetComponent<HighlightPreview>();
         var s = _selectedObjectPreview.GetComponent<SelectedObjectPreview>();
-        if (s.Tile == null || s.Tilemap == null)
-        {
-            var p = _objectPreviewInitializer.GetComponent<ObjectPreviewInitializer>();
-            p.PrimaryInit(s);
-        }
+
+        h.ClearPreviousTile();
+        s.ClearPreviousTile();
     }
 }

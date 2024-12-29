@@ -26,5 +26,5 @@ public abstract class TileUnderCoursor : MonoBehaviour
         previousTilePosition = tilePosition;
     }
 
-    private void ClearPreviousTile() => Tilemap.SetTile(previousTilePosition, null);
+    public void ClearPreviousTile() => Tilemap.SetTile(previousTilePosition, null);
 }
