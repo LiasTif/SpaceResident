@@ -3072,6 +3072,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   Tile: {fileID: 11400000, guid: ede647eb056f47b4c8509f5b8838974d, type: 2}
+  Tilemap: {fileID: 270502505}
 --- !u!114 &829419342
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -3090,6 +3091,7 @@ MonoBehaviour:
   XShaped: {fileID: 11400000, guid: 99f46bd40ad890442bc65e02637ab4df, type: 2}
   TShaped: {fileID: 11400000, guid: 062998af4dddb7846b5821e18780950d, type: 2}
   Corner: {fileID: 11400000, guid: b0681067edfd5f64eb38b4c43a744377, type: 2}
+  tilemap: {fileID: 1537159535}
 --- !u!114 &829419343
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -3108,6 +3110,7 @@ MonoBehaviour:
   XShaped: {fileID: 11400000, guid: dd3fbc3cc5128af468b116992432cf0b, type: 2}
   TShaped: {fileID: 11400000, guid: ea2f8a685a7294e499bf000dfdbe175c, type: 2}
   Corner: {fileID: 11400000, guid: 9fdf6c41909630b47a6ecc72c2542e92, type: 2}
+  tilemap: {fileID: 1537159535}
 --- !u!114 &829419344
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -3121,6 +3124,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   Tile: {fileID: 11400000, guid: cc2c39df53b0b55478b9f0a4844c9d4e, type: 2}
+  Tilemap: {fileID: 268898928}
 --- !u!1 &854002287
 GameObject:
   m_ObjectHideFlags: 0
@@ -4680,6 +4684,37 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1401465557}
   m_CullTransparentMesh: 1
+--- !u!1 &1410828599
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1410828600}
+  m_Layer: 0
+  m_Name: SetObject
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &1410828600
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1410828599}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 1836967826}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1481498341
 GameObject:
   m_ObjectHideFlags: 0
@@ -6585,6 +6620,7 @@ Transform:
   - {fileID: 829419340}
   - {fileID: 292855000}
   - {fileID: 1084437440}
+  - {fileID: 1410828600}
   - {fileID: 1131286085}
   m_Father: {fileID: 920223923}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}

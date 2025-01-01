@@ -1,7 +1,3 @@
-using UnityEngine;
-using UnityEngine.Tilemaps;
-
-public class ObjectTile : MonoBehaviour
+public class ObjectTile : ObjectTileBase
 {
-    public Tile Tile;
 }

@@ -15,8 +15,8 @@ public class SelectObject : MonoBehaviour
         {
             "wall" => _elements.GetComponent<Wall>().Single,
             "glass" => _elements.GetComponent<Glass>().Single,
-            "floor" => _elements.GetComponent<Floor>().Tile,
-            "door" => _elements.GetComponent<Door>().Tile,
+            "floor" => _elements.GetComponent<Floor>().Single,
+            "door" => _elements.GetComponent<Door>().Single,
             _ => throw new System.NotImplementedException(),
         };
     }
