@@ -23,10 +23,10 @@ public class SetObject : MonoBehaviour
         Vector3 mouseWorldPos = Camera.main.ScreenToWorldPoint(Input.mousePosition);
 
         var s = _selectedObjectPreview.GetComponent<SelectedObjectPreview>();
-        Vector3Int tilePosition = s.Tilemap.WorldToCell(mouseWorldPos);
+        Vector3Int tilePosition = s.ObjectTilemap.WorldToCell(mouseWorldPos);
 
         Tile tileToPlace = s.Tile;
 
-        s.Tilemap.SetTile(tilePosition, tileToPlace);
+        s.ObjectTilemap.SetTile(tilePosition, tileToPlace);
     }
 }

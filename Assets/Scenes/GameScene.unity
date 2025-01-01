@@ -701,6 +701,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _elements: {fileID: 829419339}
   _preViewTilemap: {fileID: 2115154607}
+  _wallsTilemap: {fileID: 1537159535}
 --- !u!4 &170283890
 Transform:
   m_ObjectHideFlags: 0
@@ -1501,6 +1502,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   Tilemap: {fileID: 0}
   Tile: {fileID: 0}
+  ObjectTilemap: {fileID: 0}
 --- !u!1 &330508585
 GameObject:
   m_ObjectHideFlags: 0
@@ -3407,6 +3409,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _selectedObjectPreview: {fileID: 324889276}
   _elements: {fileID: 829419339}
+  _objectsTilemap: {fileID: 268898928}
+  _wallsTilemap: {fileID: 1537159535}
+  _floorTilemap: {fileID: 270502505}
 --- !u!1 &1131286084
 GameObject:
   m_ObjectHideFlags: 0
@@ -6894,6 +6899,7 @@ MonoBehaviour:
   _playerHUD: {fileID: 653750727}
   _buildingHUD: {fileID: 1344782534}
   _previewsSwitch: {fileID: 292854998}
+  _setObject: {fileID: 1410828599}
 --- !u!1 &1876899921
 GameObject:
   m_ObjectHideFlags: 0
