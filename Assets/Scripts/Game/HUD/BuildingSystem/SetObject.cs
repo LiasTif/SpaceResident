@@ -1,34 +1,32 @@
-//using UnityEngine;
+using UnityEngine;
+using UnityEngine.Tilemaps;
 
-//public class SetObject : MonoBehaviour
-//{
-//    [SerializeField]
-//    private GameObject tileRealization;
+public class SetObject : MonoBehaviour
+{
+    [SerializeField]
+    private GameObject _selectedObjectPreview;
 
-//    private void Update()
-//    {
-//        if (Input.GetMouseButtonDown(0))
-//            PlaceTile();
-//    }
+    private void Update()
+    {
+        if (Input.GetMouseButtonDown(0))
+            PlaceTile();
+    }
 
-//    private void PlaceTile()
-//    {
-//        if (tileRealization.TryGetComponent<ObjectStateTiles>(out var st))
-//        {
+    private void PlaceTile()
+    {
+        if (_selectedObjectPreview == null)
+        {
+            Debug.LogError("ObjectTile not bind!");
+            return;
+        }
 
-//        }
-//        else if (tileRealization.TryGetComponent<ObjectTile>(out var t))
-//        {
+        Vector3 mouseWorldPos = Camera.main.ScreenToWorldPoint(Input.mousePosition);
 
-//        }
+        var s = _selectedObjectPreview.GetComponent<SelectedObjectPreview>();
+        Vector3Int tilePosition = s.Tilemap.WorldToCell(mouseWorldPos);
 
-//        SetTile();
-//    }
+        Tile tileToPlace = s.Tile;
 
-//    private static void SetTile()
-//    {
-//        Vector3 mouseWorldPos = Camera.main.ScreenToWorldPoint(Input.mousePosition);
-//        Vector3Int tilePosition = objectTile.Tilemap.WorldToCell(mouseWorldPos);
-//        objectTile.Tilemap.SetTile(tilePosition, objectTile.Tile);
-//    }
-//}
+        s.Tilemap.SetTile(tilePosition, tileToPlace);
+    }
+}

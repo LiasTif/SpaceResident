@@ -3071,7 +3071,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5baf1e3bdcbddb749a9a8db459392b42, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Tile: {fileID: 11400000, guid: ede647eb056f47b4c8509f5b8838974d, type: 2}
+  Single: {fileID: 11400000, guid: ede647eb056f47b4c8509f5b8838974d, type: 2}
   Tilemap: {fileID: 270502505}
 --- !u!114 &829419342
 MonoBehaviour:
@@ -3086,12 +3086,12 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   Single: {fileID: 11400000, guid: 79a9a210a60c35d4284985ee22383c97, type: 2}
+  Tilemap: {fileID: 0}
   Straight: {fileID: 11400000, guid: 5112849bd9fc5444b8e92578da71a7bf, type: 2}
   DeadEnd: {fileID: 11400000, guid: db8a7cf8f9564d940a5aa47dda762f50, type: 2}
   XShaped: {fileID: 11400000, guid: 99f46bd40ad890442bc65e02637ab4df, type: 2}
   TShaped: {fileID: 11400000, guid: 062998af4dddb7846b5821e18780950d, type: 2}
   Corner: {fileID: 11400000, guid: b0681067edfd5f64eb38b4c43a744377, type: 2}
-  tilemap: {fileID: 1537159535}
 --- !u!114 &829419343
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -3105,12 +3105,12 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   Single: {fileID: 11400000, guid: 6de5c72c7b51f21498a3c07645a55e71, type: 2}
+  Tilemap: {fileID: 0}
   Straight: {fileID: 11400000, guid: c9724d5754373da48a34c75d3a16ab7f, type: 2}
   DeadEnd: {fileID: 11400000, guid: 29e0ccb4738c4b64e86078b24fb38ab5, type: 2}
   XShaped: {fileID: 11400000, guid: dd3fbc3cc5128af468b116992432cf0b, type: 2}
   TShaped: {fileID: 11400000, guid: ea2f8a685a7294e499bf000dfdbe175c, type: 2}
   Corner: {fileID: 11400000, guid: 9fdf6c41909630b47a6ecc72c2542e92, type: 2}
-  tilemap: {fileID: 1537159535}
 --- !u!114 &829419344
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -3123,7 +3123,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2cbdbcde22ffaef4b8b3109662440877, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Tile: {fileID: 11400000, guid: cc2c39df53b0b55478b9f0a4844c9d4e, type: 2}
+  Single: {fileID: 11400000, guid: cc2c39df53b0b55478b9f0a4844c9d4e, type: 2}
   Tilemap: {fileID: 268898928}
 --- !u!1 &854002287
 GameObject:
@@ -4693,6 +4693,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1410828600}
+  - component: {fileID: 1410828601}
   m_Layer: 0
   m_Name: SetObject
   m_TagString: Untagged
@@ -4715,6 +4716,19 @@ Transform:
   m_Children: []
   m_Father: {fileID: 1836967826}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1410828601
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1410828599}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 52a6c7e562ae5ca4cbb45edcdf3ebab7, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _selectedObjectPreview: {fileID: 324889276}
 --- !u!1 &1481498341
 GameObject:
   m_ObjectHideFlags: 0
