@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Tilemaps;
 
@@ -5,6 +6,8 @@ public class SetObject : MonoBehaviour
 {
     [SerializeField]
     private GameObject _selectedObjectPreview;
+
+    private Dictionary<(Tilemap, Vector3Int), bool> reservedCells = new Dictionary<(Tilemap, Vector3Int), bool>();
 
     private void Update()
     {
@@ -23,10 +26,47 @@ public class SetObject : MonoBehaviour
         Vector3 mouseWorldPos = Camera.main.ScreenToWorldPoint(Input.mousePosition);
 
         var s = _selectedObjectPreview.GetComponent<SelectedObjectPreview>();
-        Vector3Int tilePosition = s.ObjectTilemap.WorldToCell(mouseWorldPos);
+        var tilemap = s.ObjectTilemap;
+
+        Vector3Int tilePosition = tilemap.WorldToCell(mouseWorldPos);
+
+        if (IsCellReserved(tilemap, tilePosition))
+        {
+            Debug.Log("Tile placement blocked: Cell is reserved.");
+            return;
+        }
 
         Tile tileToPlace = s.Tile;
 
-        s.ObjectTilemap.SetTile(tilePosition, tileToPlace);
+        Vector2 spriteSize = tileToPlace.sprite.bounds.size * tileToPlace.sprite.pixelsPerUnit;
+        int tileWidth = Mathf.CeilToInt(spriteSize.x / 32f);
+        int tileHeight = Mathf.CeilToInt(spriteSize.y / 32f);
+
+        tilemap.SetTile(tilePosition, tileToPlace);
+
+        ReserveTiles(tilemap, tilePosition, tileWidth, tileHeight);
+    }
+
+    private void ReserveTiles(Tilemap tilemap, Vector3Int anchorPosition, int width, int height)
+    {
+        for (int x = 0; x < width; x++)
+        {
+            for (int y = 0; y < height; y++)
+            {
+                Vector3Int offsetPosition = anchorPosition + new Vector3Int(x, y, 0);
+
+                var key = (tilemap, offsetPosition);
+                if (!reservedCells.ContainsKey(key))
+                {
+                    reservedCells[key] = true;
+                }
+            }
+        }
+    }
+
+    private bool IsCellReserved(Tilemap tilemap, Vector3Int position)
+    {
+        var key = (tilemap, position);
+        return reservedCells.ContainsKey(key);
     }
 }
