@@ -1,6 +1,5 @@
 using UnityEngine;
 using UnityEngine.Tilemaps;
-using UnityEngine.InputSystem;
 using System.Collections.Generic;
 using UnityEngine.EventSystems;
 
@@ -8,21 +7,15 @@ public class SetObject : MonoBehaviour
 {
     [SerializeField]
     private GameObject _selectedObjectPreview;
+    [SerializeField]
+    private HUDInputActions _hudInputActions;
 
     private Vector3Int _startPosition;
     private bool _isBuilding = false;
 
-    [SerializeField]
-    private HUDInputActions _hudInputActions;
-
-    private void Awake()
-    {
-        _hudInputActions = new HUDInputActions();
-        _hudInputActions.Enable();
-    }
+    private void Awake() => _hudInputActions = new();
 
     private void OnEnable() => _hudInputActions.HUD.Enable();
-
     private void OnDisable() => _hudInputActions.HUD.Disable();
 
     private void Update()
@@ -42,12 +35,6 @@ public class SetObject : MonoBehaviour
 
     private void StartBuilding()
     {
-        if (_selectedObjectPreview == null)
-        {
-            Debug.LogError("ObjectTile not bind!");
-            return;
-        }
-
         var s = _selectedObjectPreview.GetComponent<SelectedObjectPreview>();
         _startPosition = s.ObjectTilemap.WorldToCell(Camera.main.ScreenToWorldPoint(Input.mousePosition));
         _isBuilding = true;
@@ -60,165 +47,152 @@ public class SetObject : MonoBehaviour
 
         Vector3 mouseWorldPos = Camera.main.ScreenToWorldPoint(Input.mousePosition);
         Vector3Int endPosition = tilemap.WorldToCell(mouseWorldPos);
+
     }
 
     private void FinishBuilding()
     {
         _isBuilding = false;
 
-        if (_selectedObjectPreview == null)
-        {
-            Debug.LogError("ObjectTile not bind!");
-            return;
-        }
-
         var s = _selectedObjectPreview.GetComponent<SelectedObjectPreview>();
         var tilemap = s.ObjectTilemap;
 
         Vector3 mouseWorldPos = Camera.main.ScreenToWorldPoint(Input.mousePosition);
-        Vector3Int anchorPosition = tilemap.WorldToCell(mouseWorldPos);
+        Vector3Int endPosition = tilemap.WorldToCell(mouseWorldPos);
 
-        Vector2 spriteSize = s.Tile.sprite.bounds.size * s.Tile.sprite.pixelsPerUnit;
-        int tileWidth = Mathf.CeilToInt(spriteSize.x / tilemap.cellSize.x);
-        int tileHeight = Mathf.CeilToInt(spriteSize.y / tilemap.cellSize.y);
+        bool isFilled = _hudInputActions.HUD.FirstActionButton.IsPressed() && _hudInputActions.HUD.SecondActionButton.IsPressed();
+        bool isHollow = _hudInputActions.HUD.FirstActionButton.IsPressed() && !_hudInputActions.HUD.SecondActionButton.IsPressed();
 
-        List<Vector3Int> occupiedPositions = GetOccupiedPositions(anchorPosition, tileWidth, tileHeight);
+        if (isHollow)
+            BuildHollowSquare(tilemap, _startPosition, endPosition, s.Tile);
+        else if (isFilled)
+            BuildFilledSquare(tilemap, _startPosition, endPosition, s.Tile);
+        else
+            BuildLine(tilemap, _startPosition, endPosition, s.Tile);
+    }
 
-        if (!CanPlaceArea(tilemap, occupiedPositions))
+    private void BuildLine(Tilemap tilemap, Vector3Int start, Vector3Int end, Tile tile)
+    {
+        foreach (var position in GetLinePositions(start, end))
         {
-            Debug.Log("Cannot place tile: Area is already occupied.");
-            return;
+            if (tilemap.HasTile(position))
+            {
+                Debug.Log("Tile already exists at " + position);
+                return;
+            }
         }
 
-        foreach (var position in occupiedPositions)
+        foreach (var position in GetLinePositions(start, end))
         {
-            tilemap.SetTile(position, s.Tile);
+            PlaceTile(position, tile, tilemap);
         }
     }
 
+    private void BuildHollowSquare(Tilemap tilemap, Vector3Int start, Vector3Int end, Tile tile)
+    {
+        foreach (var position in GetSquarePositions(start, end, true))
+        {
+            if (tilemap.HasTile(position))
+            {
+                Debug.Log("Tile already exists at " + position);
+                return;
+            }
+        }
 
-    private void PlaceTile(Tilemap tilemap, Vector3Int anchorPosition, Tile tile)
+        foreach (var position in GetSquarePositions(start, end, true))
+        {
+            PlaceTile(position, tile, tilemap);
+        }
+    }
+
+    private void BuildFilledSquare(Tilemap tilemap, Vector3Int start, Vector3Int end, Tile tile)
+    {
+        foreach (var position in GetSquarePositions(start, end, false))
+        {
+            if (tilemap.HasTile(position))
+            {
+                Debug.Log("Tile already exists at " + position);
+                return;
+            }
+        }
+
+        foreach (var position in GetSquarePositions(start, end, false))
+        {
+            PlaceTile(position, tile, tilemap);
+        }
+    }
+
+    private void PlaceTile(Vector3Int position, Tile tile, Tilemap tilemap)
     {
         Vector2 spriteSize = tile.sprite.bounds.size * tile.sprite.pixelsPerUnit;
-        int tileWidth = Mathf.CeilToInt(spriteSize.x / tilemap.cellSize.x);
-        int tileHeight = Mathf.CeilToInt(spriteSize.y / tilemap.cellSize.y);
+        int tileWidth = Mathf.CeilToInt(spriteSize.x / 32f);
+        int tileHeight = Mathf.CeilToInt(spriteSize.y / 32f);
 
-        List<Vector3Int> positions = GetOccupiedPositions(anchorPosition, tileWidth, tileHeight);
-
-        if (!CanPlaceArea(tilemap, positions))
+        if (AreCellsReserved(tilemap, position, tileWidth, tileHeight))
         {
-            Debug.Log("Cannot place tile: area is reserved.");
+            Debug.Log("Cannot place tile: Area is reserved.");
             return;
         }
 
-        foreach (var position in positions)
-        {
-            tilemap.SetTile(position, tile);
-        }
+        tilemap.SetTile(position, tile);
+
+        ReserveTiles(tilemap, position, tileWidth, tileHeight);
     }
 
-    private List<Vector3Int> GetOccupiedPositions(Vector3Int anchorPosition, int width, int height)
+    private bool AreCellsReserved(Tilemap tilemap, Vector3Int anchorPosition, int width, int height)
     {
-        List<Vector3Int> positions = new List<Vector3Int>();
-
         for (int x = 0; x < width; x++)
         {
             for (int y = 0; y < height; y++)
             {
-                positions.Add(new Vector3Int(anchorPosition.x + x, anchorPosition.y + y, anchorPosition.z));
+                Vector3Int offsetPosition = anchorPosition + new Vector3Int(x, y, 0);
+
+                if (IsCellReserved(tilemap, offsetPosition))
+                {
+                    return true;
+                }
             }
         }
 
-        return positions;
+        return false;
     }
 
-    private bool CanPlaceArea(Tilemap tilemap, List<Vector3Int> positions)
+    private bool IsCellReserved(Tilemap tilemap, Vector3Int position)
     {
-        foreach (var position in positions)
+        var key = (tilemap, position);
+        return reservedCells.ContainsKey(key);
+    }
+
+    private Dictionary<(Tilemap, Vector3Int), bool> reservedCells = new Dictionary<(Tilemap, Vector3Int), bool>();
+
+    private void ReserveTiles(Tilemap tilemap, Vector3Int anchorPosition, int width, int height)
+    {
+        for (int x = 0; x < width; x++)
         {
-            if (tilemap.HasTile(position))
+            for (int y = 0; y < height; y++)
             {
-                return false;
+                Vector3Int offsetPosition = anchorPosition + new Vector3Int(x, y, 0);
+
+                var key = (tilemap, offsetPosition);
+                if (!reservedCells.ContainsKey(key))
+                {
+                    reservedCells[key] = true;
+                }
             }
         }
-        return true;
     }
-
-    private void BuildLine(Tilemap tilemap, Vector3Int startPosition, Vector3Int endPosition, Tile tile)
-    {
-        List<Vector3Int> linePositions = GetLinePositions(startPosition, endPosition);
-
-        if (!CanPlaceArea(tilemap, linePositions))
-        {
-            Debug.Log("Cannot place line: area is occupied.");
-            return;
-        }
-
-        foreach (var position in linePositions)
-        {
-            tilemap.SetTile(position, tile);
-        }
-    }
-
-    private void BuildHollowSquare(Tilemap tilemap, Vector3Int startPosition, Vector3Int endPosition, Tile tile)
-    {
-        List<Vector3Int> squarePositions = GetHollowSquarePositions(startPosition, endPosition);
-
-        if (!CanPlaceArea(tilemap, squarePositions))
-        {
-            Debug.Log("Cannot place hollow square: area is occupied.");
-            return;
-        }
-
-        foreach (var position in squarePositions)
-        {
-            tilemap.SetTile(position, tile);
-        }
-    }
-
-    private void BuildFilledSquare(Tilemap tilemap, Vector3Int startPosition, Vector3Int endPosition, Tile tile)
-    {
-        List<Vector3Int> squarePositions = GetFilledSquarePositions(startPosition, endPosition);
-
-        if (!CanPlaceArea(tilemap, squarePositions))
-        {
-            Debug.Log("Cannot place filled square: area is occupied.");
-            return;
-        }
-
-        foreach (var position in squarePositions)
-        {
-            tilemap.SetTile(position, tile);
-        }
-    }
-
-    //private bool CanPlaceArea(Tilemap tilemap, List<Vector3Int> positions)
-    //{
-    //    foreach (var position in positions)
-    //    {
-    //        if (tilemap.HasTile(position))
-    //        {
-    //            return false;
-    //        }
-    //    }
-    //    return true;
-    //}
 
     private List<Vector3Int> GetLinePositions(Vector3Int start, Vector3Int current)
     {
-        List<Vector3Int> linePositions = new List<Vector3Int>();
+        List<Vector3Int> linePositions = new();
 
         int deltaX = Mathf.Abs(current.x - start.x);
         int deltaY = Mathf.Abs(current.y - start.y);
 
         if (deltaX > deltaY)
-        {
             current.y = start.y;
-        }
         else
-        {
             current.x = start.x;
-        }
 
         if (current.x == start.x)
         {
@@ -246,7 +220,7 @@ public class SetObject : MonoBehaviour
 
     private IEnumerable<Vector3Int> GetSquarePositions(Vector3Int start, Vector3Int end, bool hollow)
     {
-        List<Vector3Int> positions = new List<Vector3Int>();
+        List<Vector3Int> positions = new();
 
         int minX = Mathf.Min(start.x, end.x);
         int maxX = Mathf.Max(start.x, end.x);
@@ -265,15 +239,5 @@ public class SetObject : MonoBehaviour
         }
 
         return positions;
-    }
-
-    private List<Vector3Int> GetHollowSquarePositions(Vector3Int start, Vector3Int end)
-    {
-        return new List<Vector3Int>(GetSquarePositions(start, end, true));
-    }
-
-    private List<Vector3Int> GetFilledSquarePositions(Vector3Int start, Vector3Int end)
-    {
-        return new List<Vector3Int>(GetSquarePositions(start, end, false));
     }
 }
