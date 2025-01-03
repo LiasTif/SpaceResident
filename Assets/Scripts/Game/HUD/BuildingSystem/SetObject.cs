@@ -15,25 +15,29 @@ public class SetObject : MonoBehaviour
     [SerializeField]
     private HUDInputActions _hudInputActions;
 
+    private void Awake()
+    {
+        _hudInputActions = new HUDInputActions();
+        _hudInputActions.Enable();
+    }
+
+    private void OnEnable() => _hudInputActions.HUD.Enable();
+
+    private void OnDisable() => _hudInputActions.HUD.Disable();
+
     private void Update()
     {
         if (EventSystem.current.IsPointerOverGameObject())
             return;
 
         if (Input.GetMouseButtonDown(0))
-        {
             StartBuilding();
-        }
 
         if (Input.GetMouseButton(0) && _isBuilding)
-        {
             UpdatePreview();
-        }
 
         if (Input.GetMouseButtonUp(0))
-        {
             FinishBuilding();
-        }
     }
 
     private void StartBuilding()
@@ -56,7 +60,6 @@ public class SetObject : MonoBehaviour
 
         Vector3 mouseWorldPos = Camera.main.ScreenToWorldPoint(Input.mousePosition);
         Vector3Int endPosition = tilemap.WorldToCell(mouseWorldPos);
-
     }
 
     private void FinishBuilding()
@@ -71,81 +74,135 @@ public class SetObject : MonoBehaviour
 
         var s = _selectedObjectPreview.GetComponent<SelectedObjectPreview>();
         var tilemap = s.ObjectTilemap;
+
         Vector3 mouseWorldPos = Camera.main.ScreenToWorldPoint(Input.mousePosition);
-        Vector3Int endPosition = tilemap.WorldToCell(mouseWorldPos);
+        Vector3Int anchorPosition = tilemap.WorldToCell(mouseWorldPos);
 
-        _hudInputActions = new();
+        Vector2 spriteSize = s.Tile.sprite.bounds.size * s.Tile.sprite.pixelsPerUnit;
+        int tileWidth = Mathf.CeilToInt(spriteSize.x / tilemap.cellSize.x);
+        int tileHeight = Mathf.CeilToInt(spriteSize.y / tilemap.cellSize.y);
 
-        bool isFilled = _hudInputActions.HUD.FirstActionButton.IsPressed() && _hudInputActions.HUD.SecondActionButton.IsPressed();
-        bool isHollow = _hudInputActions.HUD.FirstActionButton.IsPressed() && !_hudInputActions.HUD.SecondActionButton.IsPressed();
+        List<Vector3Int> occupiedPositions = GetOccupiedPositions(anchorPosition, tileWidth, tileHeight);
 
-        if (isHollow)
+        if (!CanPlaceArea(tilemap, occupiedPositions))
         {
-            BuildHollowSquare(tilemap, _startPosition, endPosition, s.Tile);
+            Debug.Log("Cannot place tile: Area is already occupied.");
+            return;
         }
-        else if (isFilled)
+
+        foreach (var position in occupiedPositions)
         {
-            BuildFilledSquare(tilemap, _startPosition, endPosition, s.Tile);
-        }
-        else
-        {
-            BuildLine(tilemap, _startPosition, endPosition, s.Tile);
+            tilemap.SetTile(position, s.Tile);
         }
     }
 
-    private void OnEnable() => _hudInputActions.HUD.Enable();
-    private void OnDisable() => _hudInputActions.HUD.Disable();
 
-    private void BuildLine(Tilemap tilemap, Vector3Int start, Vector3Int end, Tile tile)
+    private void PlaceTile(Tilemap tilemap, Vector3Int anchorPosition, Tile tile)
     {
-        foreach (var position in GetLinePositions(start, end))
+        Vector2 spriteSize = tile.sprite.bounds.size * tile.sprite.pixelsPerUnit;
+        int tileWidth = Mathf.CeilToInt(spriteSize.x / tilemap.cellSize.x);
+        int tileHeight = Mathf.CeilToInt(spriteSize.y / tilemap.cellSize.y);
+
+        List<Vector3Int> positions = GetOccupiedPositions(anchorPosition, tileWidth, tileHeight);
+
+        if (!CanPlaceArea(tilemap, positions))
         {
-            if (tilemap.HasTile(position))
-            {
-                Debug.Log("Tile already exists at " + position);
-                return;
-            }
+            Debug.Log("Cannot place tile: area is reserved.");
+            return;
         }
 
-        foreach (var position in GetLinePositions(start, end))
+        foreach (var position in positions)
         {
             tilemap.SetTile(position, tile);
         }
     }
 
-    private void BuildHollowSquare(Tilemap tilemap, Vector3Int start, Vector3Int end, Tile tile)
+    private List<Vector3Int> GetOccupiedPositions(Vector3Int anchorPosition, int width, int height)
     {
-        foreach (var position in GetSquarePositions(start, end, true))
+        List<Vector3Int> positions = new List<Vector3Int>();
+
+        for (int x = 0; x < width; x++)
         {
-            if (tilemap.HasTile(position))
+            for (int y = 0; y < height; y++)
             {
-                Debug.Log("Tile already exists at " + position);
-                return;
+                positions.Add(new Vector3Int(anchorPosition.x + x, anchorPosition.y + y, anchorPosition.z));
             }
         }
 
-        foreach (var position in GetSquarePositions(start, end, true))
+        return positions;
+    }
+
+    private bool CanPlaceArea(Tilemap tilemap, List<Vector3Int> positions)
+    {
+        foreach (var position in positions)
+        {
+            if (tilemap.HasTile(position))
+            {
+                return false;
+            }
+        }
+        return true;
+    }
+
+    private void BuildLine(Tilemap tilemap, Vector3Int startPosition, Vector3Int endPosition, Tile tile)
+    {
+        List<Vector3Int> linePositions = GetLinePositions(startPosition, endPosition);
+
+        if (!CanPlaceArea(tilemap, linePositions))
+        {
+            Debug.Log("Cannot place line: area is occupied.");
+            return;
+        }
+
+        foreach (var position in linePositions)
         {
             tilemap.SetTile(position, tile);
         }
     }
 
-    private void BuildFilledSquare(Tilemap tilemap, Vector3Int start, Vector3Int end, Tile tile)
+    private void BuildHollowSquare(Tilemap tilemap, Vector3Int startPosition, Vector3Int endPosition, Tile tile)
     {
-        foreach (var position in GetSquarePositions(start, end, false))
+        List<Vector3Int> squarePositions = GetHollowSquarePositions(startPosition, endPosition);
+
+        if (!CanPlaceArea(tilemap, squarePositions))
         {
-            if (tilemap.HasTile(position))
-            {
-                Debug.Log("Tile already exists at " + position);
-                return;
-            }
+            Debug.Log("Cannot place hollow square: area is occupied.");
+            return;
         }
 
-        foreach (var position in GetSquarePositions(start, end, false))
+        foreach (var position in squarePositions)
         {
             tilemap.SetTile(position, tile);
         }
     }
+
+    private void BuildFilledSquare(Tilemap tilemap, Vector3Int startPosition, Vector3Int endPosition, Tile tile)
+    {
+        List<Vector3Int> squarePositions = GetFilledSquarePositions(startPosition, endPosition);
+
+        if (!CanPlaceArea(tilemap, squarePositions))
+        {
+            Debug.Log("Cannot place filled square: area is occupied.");
+            return;
+        }
+
+        foreach (var position in squarePositions)
+        {
+            tilemap.SetTile(position, tile);
+        }
+    }
+
+    //private bool CanPlaceArea(Tilemap tilemap, List<Vector3Int> positions)
+    //{
+    //    foreach (var position in positions)
+    //    {
+    //        if (tilemap.HasTile(position))
+    //        {
+    //            return false;
+    //        }
+    //    }
+    //    return true;
+    //}
 
     private List<Vector3Int> GetLinePositions(Vector3Int start, Vector3Int current)
     {
@@ -187,8 +244,6 @@ public class SetObject : MonoBehaviour
         return linePositions;
     }
 
-
-
     private IEnumerable<Vector3Int> GetSquarePositions(Vector3Int start, Vector3Int end, bool hollow)
     {
         List<Vector3Int> positions = new List<Vector3Int>();
@@ -210,5 +265,15 @@ public class SetObject : MonoBehaviour
         }
 
         return positions;
+    }
+
+    private List<Vector3Int> GetHollowSquarePositions(Vector3Int start, Vector3Int end)
+    {
+        return new List<Vector3Int>(GetSquarePositions(start, end, true));
+    }
+
+    private List<Vector3Int> GetFilledSquarePositions(Vector3Int start, Vector3Int end)
+    {
+        return new List<Vector3Int>(GetSquarePositions(start, end, false));
     }
 }
