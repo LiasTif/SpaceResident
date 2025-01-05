@@ -47,7 +47,6 @@ public class SetObject : MonoBehaviour
 
         Vector3 mouseWorldPos = Camera.main.ScreenToWorldPoint(Input.mousePosition);
         Vector3Int endPosition = tilemap.WorldToCell(mouseWorldPos);
-
     }
 
     private void FinishBuilding()
@@ -148,9 +147,7 @@ public class SetObject : MonoBehaviour
                 Vector3Int offsetPosition = anchorPosition + new Vector3Int(x, y, 0);
 
                 if (IsCellReserved(tilemap, offsetPosition))
-                {
                     return true;
-                }
             }
         }
 
@@ -175,9 +172,7 @@ public class SetObject : MonoBehaviour
 
                 var key = (tilemap, offsetPosition);
                 if (!reservedCells.ContainsKey(key))
-                {
                     reservedCells[key] = true;
-                }
             }
         }
     }
