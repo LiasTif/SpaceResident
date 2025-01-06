@@ -6,7 +6,7 @@ public class LinePlacement : ITilePlacementStrategy
 {
     public void Place(Tilemap tilemap, Vector3Int start, Vector3Int end, Tile tile, TileReservationManager reservationManager)
     {
-        foreach (var position in GetLinePositions(start, end))
+        foreach (var position in GetPositions(start, end))
         {
             Vector2 spriteSize = tile.sprite.bounds.size * tile.sprite.pixelsPerUnit;
             int tileWidth = Mathf.CeilToInt(spriteSize.x / 32f);
@@ -19,13 +19,13 @@ public class LinePlacement : ITilePlacementStrategy
             }
         }
 
-        foreach (var position in GetLinePositions(start, end))
+        foreach (var position in GetPositions(start, end))
         {
             reservationManager.PlaceTile(position, tile, tilemap);
         }
     }
 
-    private IEnumerable<Vector3Int> GetLinePositions(Vector3Int start, Vector3Int end)
+    public IEnumerable<Vector3Int> GetPositions(Vector3Int start, Vector3Int end)
     {
         List<Vector3Int> linePositions = new();
         int deltaX = Mathf.Abs(end.x - start.x);

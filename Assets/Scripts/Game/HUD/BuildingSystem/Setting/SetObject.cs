@@ -68,62 +68,6 @@ public class SetObject : MonoBehaviour
             _placementStrategy = new LinePlacement();
     }
 
-    //private void PlaceTile(Vector3Int position, Tile tile, Tilemap tilemap)
-    //{
-    //    Vector2 spriteSize = tile.sprite.bounds.size * tile.sprite.pixelsPerUnit;
-    //    int tileWidth = Mathf.CeilToInt(spriteSize.x / 32f);
-    //    int tileHeight = Mathf.CeilToInt(spriteSize.y / 32f);
-
-    //    if (AreCellsReserved(tilemap, position, tileWidth, tileHeight))
-    //    {
-    //        Debug.Log("Cannot place tile: Area is reserved.");
-    //        return;
-    //    }
-
-    //    tilemap.SetTile(position, tile);
-
-    //    ReserveTiles(tilemap, position, tileWidth, tileHeight);
-    //}
-
-    //private bool AreCellsReserved(Tilemap tilemap, Vector3Int anchorPosition, int width, int height)
-    //{
-    //    for (int x = 0; x < width; x++)
-    //    {
-    //        for (int y = 0; y < height; y++)
-    //        {
-    //            Vector3Int offsetPosition = anchorPosition + new Vector3Int(x, y, 0);
-
-    //            if (IsCellReserved(tilemap, offsetPosition))
-    //                return true;
-    //        }
-    //    }
-
-    //    return false;
-    //}
-
-    //private bool IsCellReserved(Tilemap tilemap, Vector3Int position)
-    //{
-    //    var key = (tilemap, position);
-    //    return reservedCells.ContainsKey(key);
-    //}
-
-    //private Dictionary<(Tilemap, Vector3Int), bool> reservedCells = new Dictionary<(Tilemap, Vector3Int), bool>();
-
-    //private void ReserveTiles(Tilemap tilemap, Vector3Int anchorPosition, int width, int height)
-    //{
-    //    for (int x = 0; x < width; x++)
-    //    {
-    //        for (int y = 0; y < height; y++)
-    //        {
-    //            Vector3Int offsetPosition = anchorPosition + new Vector3Int(x, y, 0);
-
-    //            var key = (tilemap, offsetPosition);
-    //            if (!reservedCells.ContainsKey(key))
-    //                reservedCells[key] = true;
-    //        }
-    //    }
-    //}
-
     private Vector3 GetMouseWorldPosition() =>
         Camera.main.ScreenToWorldPoint(Input.mousePosition);
 }
