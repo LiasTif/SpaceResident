@@ -10,10 +10,10 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 13312, guid: 0000000000000000e000000000000000, type: 0}
-  m_Name: HUD_0
+  m_Name: CellHighlight_0
   m_EditorClassIdentifier: 
-  m_Sprite: {fileID: -1879704881, guid: 6fbbca85ee829ae44a7534f2d060fe15, type: 3}
-  m_Color: {r: 1, g: 1, b: 1, a: 0.09803922}
+  m_Sprite: {fileID: -1787866193, guid: 355a656fa5533d4499ab79b93f4899ff, type: 3}
+  m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_Transform:
     e00: 1
     e01: 0
