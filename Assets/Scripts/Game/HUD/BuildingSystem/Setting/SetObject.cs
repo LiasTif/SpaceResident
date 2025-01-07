@@ -1,8 +1,5 @@
-using System.Collections.Generic;
-using UnityEditor;
 using UnityEngine;
 using UnityEngine.EventSystems;
-using UnityEngine.Tilemaps;
 
 public class SetObject : MonoBehaviour
 {
@@ -48,35 +45,17 @@ public class SetObject : MonoBehaviour
     private void UpdatePreview()
     {
         var preview = _selectedObjectPreview.GetComponent<SelectedObjectPreview>();
-        var tilemap = preview.ObjectTilemap;
-
-        Vector3Int mousePosition = tilemap.WorldToCell(GetMouseWorldPosition());
-        Vector3Int endPosition = mousePosition;
+        var tilemap = preview.Tilemap;
+        Vector3Int endPosition = tilemap.WorldToCell(GetMouseWorldPosition());
 
         SetPlacementStrategy();
-
-        IEnumerable<Vector3Int> positionsToHighlight = _placementStrategy?.GetPositions(_startPosition, endPosition);
-
-        var highlight = _highlightPreview.GetComponent<HighlightPreview>();
-
-        if (positionsToHighlight != null)
-        {
-            foreach (var position in positionsToHighlight)
-            {
-                if (_reservationManager.IsCellAvailable(tilemap, position))
-                    HighlightTile(position, highlight.Tile);
-                else
-                    HighlightTile(position, highlight.DenyTile);
-            }
-        }
+        _placementStrategy?.Place(tilemap, _startPosition, endPosition, preview.Tile);
     }
 
-    private void ClearTilemap(Tilemap tilemap) => tilemap.ClearAllTiles();
-
-    private void HighlightTile(Vector3Int position, Tile tile)
+    private void DisablePreview()
     {
-        var highlightPreview = _highlightPreview.GetComponent<HighlightPreview>();
-        highlightPreview.Tilemap.SetTile(position, tile);
+        var preview = _selectedObjectPreview.GetComponent<SelectedObjectPreview>();
+        preview.Tilemap.ClearAllTiles();
     }
 
     private void FinishBuilding()
@@ -90,8 +69,7 @@ public class SetObject : MonoBehaviour
         SetPlacementStrategy();
         _placementStrategy?.Place(tilemap, _startPosition, endPosition, preview.Tile, _reservationManager);
 
-        var highlight = _highlightPreview.GetComponent<HighlightPreview>();
-        ClearTilemap(highlight.Tilemap);
+        DisablePreview();
     }
 
     private void SetPlacementStrategy()
