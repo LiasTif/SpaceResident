@@ -1,7 +1,5 @@
-using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.EventSystems;
-using UnityEngine.Tilemaps;
 
 public class SetObject : MonoBehaviour
 {
@@ -43,7 +41,18 @@ public class SetObject : MonoBehaviour
 
     private void UpdatePreview()
     {
-        // Not implemented yet
+        var preview = _selectedObjectPreview.GetComponent<SelectedObjectPreview>();
+        var tilemap = preview.Tilemap;
+        Vector3Int endPosition = tilemap.WorldToCell(GetMouseWorldPosition());
+
+        SetPlacementStrategy();
+        _placementStrategy?.Place(tilemap, _startPosition, endPosition, preview.Tile);
+    }
+
+    private void DisablePreview()
+    {
+        var preview = _selectedObjectPreview.GetComponent<SelectedObjectPreview>();
+        preview.Tilemap.ClearAllTiles();
     }
 
     private void FinishBuilding()
@@ -56,6 +65,8 @@ public class SetObject : MonoBehaviour
 
         SetPlacementStrategy();
         _placementStrategy?.Place(tilemap, _startPosition, endPosition, preview.Tile, _reservationManager);
+
+        DisablePreview();
     }
 
     private void SetPlacementStrategy()
