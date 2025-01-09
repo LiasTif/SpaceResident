@@ -45,6 +45,8 @@ public class SetObject : MonoBehaviour
         var tilemap = preview.Tilemap;
         Vector3Int endPosition = tilemap.WorldToCell(GetMouseWorldPosition());
 
+        tilemap.ClearAllTiles();
+
         SetPlacementStrategy();
         _placementStrategy?.Place(tilemap, _startPosition, endPosition, preview.Tile);
     }
