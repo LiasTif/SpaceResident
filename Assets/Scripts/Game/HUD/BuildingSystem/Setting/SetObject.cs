@@ -42,13 +42,14 @@ public class SetObject : MonoBehaviour
     private void UpdatePreview()
     {
         var preview = _selectedObjectPreview.GetComponent<SelectedObjectPreview>();
-        var tilemap = preview.Tilemap;
-        Vector3Int endPosition = tilemap.WorldToCell(GetMouseWorldPosition());
+        var previewTilemap = preview.Tilemap;
+        Vector3Int endPosition = previewTilemap.WorldToCell(GetMouseWorldPosition());
 
-        tilemap.ClearAllTiles();
+        previewTilemap.ClearAllTiles();
 
         SetPlacementStrategy();
-        _placementStrategy?.PlacePreview(tilemap, _startPosition, endPosition, preview.Tile, _reservationManager);
+        PlacePreview placePreview = new(previewTilemap, preview.ObjectTilemap, _startPosition, endPosition, preview.Tile, _placementStrategy);
+        placePreview.Place();
     }
 
     private void DisablePreview()

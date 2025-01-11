@@ -25,21 +25,6 @@ public class LinePlacement : ITilePlacementStrategy
         }
     }
 
-    public void PlacePreview(Tilemap tilemap, Vector3Int start, Vector3Int end, Tile tile, TileReservationManager reservationManager)
-    {
-        foreach (var position in GetPositions(start, end))
-        {
-            Vector2 spriteSize = tile.sprite.bounds.size * tile.sprite.pixelsPerUnit;
-            int tileWidth = Mathf.CeilToInt(spriteSize.x / 32f);
-            int tileHeight = Mathf.CeilToInt(spriteSize.y / 32f);
-
-            if ((position.x - start.x) % (tileWidth) == 0 && (position.y - start.y) % (tileHeight) == 0)
-                if (reservationManager.AreCellsAvailable(tilemap, position, tileWidth, tileHeight))
-                    tilemap.SetTile(position, tile);
-        }
-    }
-
-
     public IEnumerable<Vector3Int> GetPositions(Vector3Int start, Vector3Int end)
     {
         List<Vector3Int> linePositions = new();
