@@ -25,11 +25,18 @@ public class HollowSquarePlacement : ITilePlacementStrategy
         }
     }
 
-    public void Place(Tilemap tilemap, Vector3Int start, Vector3Int end, Tile tile)
+    public void PlacePreview(Tilemap tilemap, Vector3Int start, Vector3Int end, Tile tile, TileReservationManager reservationManager)
     {
         foreach (var position in GetPositions(start, end))
         {
-            tilemap.SetTile(position, tile);
+            Vector2 spriteSize = tile.sprite.bounds.size * tile.sprite.pixelsPerUnit;
+            int tileWidth = Mathf.CeilToInt(spriteSize.x / 32f);
+            int tileHeight = Mathf.CeilToInt(spriteSize.y / 32f);
+
+            if (reservationManager.AreCellsAvailable(tilemap, position, tileWidth, tileHeight))
+            {
+                tilemap.SetTile(position, tile);
+            }
         }
     }
 

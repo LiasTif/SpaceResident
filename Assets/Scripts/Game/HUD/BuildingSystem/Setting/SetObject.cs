@@ -48,7 +48,7 @@ public class SetObject : MonoBehaviour
         tilemap.ClearAllTiles();
 
         SetPlacementStrategy();
-        _placementStrategy?.Place(tilemap, _startPosition, endPosition, preview.Tile);
+        _placementStrategy?.PlacePreview(tilemap, _startPosition, endPosition, preview.Tile, _reservationManager);
     }
 
     private void DisablePreview()
