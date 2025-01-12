@@ -48,7 +48,7 @@ public class SetObject : MonoBehaviour
         previewTilemap.ClearAllTiles();
 
         SetPlacementStrategy();
-        PlacePreview placePreview = new(previewTilemap, preview.ObjectTilemap, _startPosition, endPosition, preview.Tile, _placementStrategy);
+        PlacePreview placePreview = new(preview.ObjectTilemap, previewTilemap, _startPosition, endPosition, preview.Tile, _placementStrategy, _reservationManager);
         placePreview.Place();
     }
 
