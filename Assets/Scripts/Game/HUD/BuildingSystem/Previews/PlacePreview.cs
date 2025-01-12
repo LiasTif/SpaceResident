@@ -15,7 +15,7 @@ public class PlacePreview
 
     private TileReservationManager _reservationManager;
 
-    public PlacePreview(Tilemap origin, Tilemap preview, Vector3Int start, Vector3Int end, Tile tile, ITilePlacementStrategy placementStrategy, TileReservationManager reservationManager)
+    public PlacePreview(Tilemap origin, Tilemap preview, Tile tile, Vector3Int start, Vector3Int end,  ITilePlacementStrategy placementStrategy, TileReservationManager reservationManager)
     {
         _origin = origin;
         _preview = preview;

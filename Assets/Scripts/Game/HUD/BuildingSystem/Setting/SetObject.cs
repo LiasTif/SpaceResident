@@ -48,7 +48,7 @@ public class SetObject : MonoBehaviour
         previewTilemap.ClearAllTiles();
 
         SetPlacementStrategy();
-        PlacePreview placePreview = new(preview.ObjectTilemap, previewTilemap, _startPosition, endPosition, preview.Tile, _placementStrategy, _reservationManager);
+        PlacePreview placePreview = new(preview.ObjectTilemap, previewTilemap, preview.Tile, _startPosition, endPosition, _placementStrategy, _reservationManager);
         placePreview.Place();
     }
 
@@ -67,7 +67,9 @@ public class SetObject : MonoBehaviour
         Vector3Int endPosition = tilemap.WorldToCell(GetMouseWorldPosition());
 
         SetPlacementStrategy();
-        _placementStrategy?.Place(tilemap, _startPosition, endPosition, preview.Tile, _reservationManager);
+
+        PlaceTile placeTile = new(tilemap, preview.Tile, _startPosition, endPosition, _placementStrategy, _reservationManager);
+        placeTile.Place();
 
         DisablePreview();
     }
