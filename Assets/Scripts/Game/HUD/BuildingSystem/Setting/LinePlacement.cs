@@ -25,14 +25,6 @@ public class LinePlacement : ITilePlacementStrategy
         }
     }
 
-    public void Place(Tilemap tilemap, Vector3Int start, Vector3Int end, Tile tile)
-    {
-        foreach (var position in GetPositions(start, end))
-        {
-            tilemap.SetTile(position, tile);
-        }
-    }
-
     public IEnumerable<Vector3Int> GetPositions(Vector3Int start, Vector3Int end)
     {
         List<Vector3Int> linePositions = new();
