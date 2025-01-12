@@ -15,7 +15,10 @@ public class PlacePreview
 
     private TileReservationManager _reservationManager;
 
-    public PlacePreview(Tilemap origin, Tilemap preview, Tile tile, Vector3Int start, Vector3Int end,  ITilePlacementStrategy placementStrategy, TileReservationManager reservationManager)
+    private HighlightPreview _highlightPreview;
+
+    public PlacePreview(Tilemap origin, Tilemap preview, Tile tile, Vector3Int start, Vector3Int end,
+        ITilePlacementStrategy placementStrategy, TileReservationManager reservationManager, GameObject highlightPreview)
     {
         _origin = origin;
         _preview = preview;
@@ -23,8 +26,8 @@ public class PlacePreview
         _endPosition = end;
         _tile = tile;
         _placementStrategy = placementStrategy;
-
         _reservationManager = reservationManager;
+        _highlightPreview = highlightPreview.GetComponent<HighlightPreview>();
     }
 
     public void Place()
@@ -40,8 +43,13 @@ public class PlacePreview
                 if (_reservationManager.AreCellsAvailable(_preview, position, tileWidth, tileHeight))
                 {
                     _preview.SetTile(position, _tile);
+                    _highlightPreview.Tilemap.SetTile(position, _highlightPreview.Tile);
+
                     if (!_reservationManager.AreCellsAvailable(_origin, position, tileWidth, tileHeight))
+                    {
                         _preview.SetTile(position, null);
+                        _highlightPreview.Tilemap.SetTile(position, null);
+                    }
                 }
             }
         }

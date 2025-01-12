@@ -7,6 +7,8 @@ public class SetObject : MonoBehaviour
     private GameObject _selectedObjectPreview;
     [SerializeField]
     private HUDInputActions _hudInputActions;
+    [SerializeField]
+    private GameObject _highlightPreview;
 
     private Vector3Int _startPosition;
     private bool _isBuilding = false;
@@ -41,21 +43,30 @@ public class SetObject : MonoBehaviour
 
     private void UpdatePreview()
     {
-        var preview = _selectedObjectPreview.GetComponent<SelectedObjectPreview>();
-        var previewTilemap = preview.Tilemap;
-        Vector3Int endPosition = previewTilemap.WorldToCell(GetMouseWorldPosition());
+        var objectPreview = _selectedObjectPreview.GetComponent<SelectedObjectPreview>();
+        var highlightPreview = _highlightPreview.GetComponent<HighlightPreview>();
 
-        previewTilemap.ClearAllTiles();
+        var objectPreviewTilemap = objectPreview.Tilemap;
+        var highlightPreviewTilemap = highlightPreview.Tilemap;
+
+        Vector3Int endPosition = objectPreviewTilemap.WorldToCell(GetMouseWorldPosition());
+
+        objectPreviewTilemap.ClearAllTiles();
+        highlightPreviewTilemap.ClearAllTiles();
 
         SetPlacementStrategy();
-        PlacePreview placePreview = new(preview.ObjectTilemap, previewTilemap, preview.Tile, _startPosition, endPosition, _placementStrategy, _reservationManager);
+        PlacePreview placePreview = new(objectPreview.ObjectTilemap, objectPreviewTilemap, objectPreview.Tile,
+            _startPosition, endPosition, _placementStrategy, _reservationManager, _highlightPreview);
         placePreview.Place();
     }
 
     private void DisablePreview()
     {
-        var preview = _selectedObjectPreview.GetComponent<SelectedObjectPreview>();
-        preview.Tilemap.ClearAllTiles();
+        var objectPreview = _selectedObjectPreview.GetComponent<SelectedObjectPreview>();
+        var highlightPreview = _highlightPreview.GetComponent<HighlightPreview>();
+
+        objectPreview.Tilemap.ClearAllTiles();
+        highlightPreview.Tilemap.ClearAllTiles();
     }
 
     private void FinishBuilding()
