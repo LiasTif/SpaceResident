@@ -4,9 +4,7 @@ using UnityEngine.Tilemaps;
 
 public class TileReservationManager
 {
-    const float TILESIZE = 32f;
-
-    private readonly HashSet<(Tilemap, Vector3Int)> reservedCells = new();
+    private HashSet<(Tilemap, Vector3Int)> reservedCells = new();
 
     public bool AreCellsAvailable(Tilemap tilemap, Vector3Int anchorPosition, int width, int height)
     {
@@ -38,14 +36,17 @@ public class TileReservationManager
     public void PlaceTile(Vector3Int position, Tile tile, Tilemap tilemap)
     {
         Vector2 spriteSize = tile.sprite.bounds.size * tile.sprite.pixelsPerUnit;
-        int tileWidth = Mathf.CeilToInt(spriteSize.x / TILESIZE);
-        int tileHeight = Mathf.CeilToInt(spriteSize.y / TILESIZE);
+        int tileWidth = Mathf.CeilToInt(spriteSize.x / 32f);
+        int tileHeight = Mathf.CeilToInt(spriteSize.y / 32f);
 
-        if (AreCellsAvailable(tilemap, position, tileWidth, tileHeight))
+        if (!AreCellsAvailable(tilemap, position, tileWidth, tileHeight))
         {
-            tilemap.SetTile(position, tile);
-            ReserveCells(tilemap, position, tileWidth, tileHeight);
+            Debug.Log("Cannot place tile: Area is reserved.");
+            return;
         }
+
+        tilemap.SetTile(position, tile);
+        ReserveCells(tilemap, position, tileWidth, tileHeight);
     }
 
     public bool IsCellAvailable(Tilemap tilemap, Vector3Int position) => !reservedCells.Contains((tilemap, position));
