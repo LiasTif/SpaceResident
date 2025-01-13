@@ -4734,6 +4734,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _selectedObjectPreview: {fileID: 324889276}
+  _highlightPreview: {fileID: 2084957200}
 --- !u!1 &1481498341
 GameObject:
   m_ObjectHideFlags: 0

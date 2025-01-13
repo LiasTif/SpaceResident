@@ -3,19 +3,19 @@ using UnityEngine.Tilemaps;
 
 public class PlacePreview
 {
-    private Tilemap _origin;
-    private Tilemap _preview;
+    private readonly Tilemap _origin;
+    private readonly Tilemap _preview;
 
     private Vector3Int _startPosition;
     private Vector3Int _endPosition;
 
-    private Tile _tile;
+    private readonly Tile _tile;
 
-    private ITilePlacementStrategy _placementStrategy;
+    private readonly ITilePlacementStrategy _placementStrategy;
 
-    private TileReservationManager _reservationManager;
+    private readonly TileReservationManager _reservationManager;
 
-    private HighlightPreview _highlightPreview;
+    private readonly HighlightPreview _highlightPreview;
 
     public PlacePreview(Tilemap origin, Tilemap preview, Tile tile, Vector3Int start, Vector3Int end,
         ITilePlacementStrategy placementStrategy, TileReservationManager reservationManager, GameObject highlightPreview)
@@ -46,12 +46,15 @@ public class PlacePreview
                     _highlightPreview.Tilemap.SetTile(position, _highlightPreview.Tile);
 
                     if (!_reservationManager.AreCellsAvailable(_origin, position, tileWidth, tileHeight))
-                    {
-                        _preview.SetTile(position, null);
-                        _highlightPreview.Tilemap.SetTile(position, null);
-                    }
+                        ClearTileAtPosition(position);
                 }
             }
         }
+    }
+
+    private void ClearTileAtPosition(Vector3Int position)
+    {
+        _preview.SetTile(position, null);
+        _highlightPreview.Tilemap.SetTile(position, null);
     }
 }
