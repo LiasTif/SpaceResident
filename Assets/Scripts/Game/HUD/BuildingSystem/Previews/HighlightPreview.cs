@@ -1,13 +1,8 @@
 using UnityEngine;
 using UnityEngine.Tilemaps;
-using UnityEngine.UIElements;
 
 public class HighlightPreview : TileUnderCoursor
 {
-    public Tile DenyTile;
-
-    private Vector3Int previousTilePosition;
-
     private TileReservationManager _reservationManager;
 
     private void Awake() => _reservationManager = new();
@@ -33,6 +28,4 @@ public class HighlightPreview : TileUnderCoursor
 
         previousTilePosition = tilePosition;
     }
-
-    public void ClearPreviousTile() => Tilemap.SetTile(this.previousTilePosition, null);
 }

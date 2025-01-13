@@ -3,25 +3,23 @@ using UnityEngine.Tilemaps;
 
 public class PlaceTile
 {
-    private readonly Tilemap _tilemap;
-    private readonly ObjectTileBase _tileBase;
+    private readonly SelectedObjectPreview _selectedObjectPreview;
+
     private Vector3Int _start;
     private Vector3Int _end;
 
     private readonly TileReservationManager _reservationManager;
     private readonly ITilePlacementStrategy _strategy;
-    private readonly TileDataManager _tileDataManager;
 
-    public PlaceTile(Tilemap tilemap, ObjectTileBase tileBase, Vector3Int start, Vector3Int end,
-        ITilePlacementStrategy strategy, TileReservationManager reservationManager, TileDataManager tileDataManager)
+    private float _rotationAngle;
+
+    public PlaceTile(SelectedObjectPreview selectedObjectPreview, Vector3Int start, Vector3Int end, ITilePlacementStrategy strategy, TileReservationManager reservationManager)
     {
-        _tilemap = tilemap;
-        _tileBase = tileBase;
+        _selectedObjectPreview = selectedObjectPreview;
         _start = start;
         _end = end;
         _reservationManager = reservationManager;
         _strategy = strategy;
-        _tileDataManager = tileDataManager;
     }
 
     public void Place()
@@ -29,27 +27,81 @@ public class PlaceTile
         foreach (var position in _strategy.GetPositions(_start, _end))
         {
             var tileToPlace = GetTileBasedOnNeighbors(position);
-            _reservationManager.PlaceTile(position, tileToPlace, _tilemap);
-            _tileDataManager.AddTile(position, _tileBase);
+            _reservationManager.PlaceTile(position, tileToPlace, _selectedObjectPreview.ObjectTilemap);
+            RotateTile(position, _selectedObjectPreview.ObjectTilemap);
+            RecalculateNeighborsRotation(position);
         }
+    }
+
+    private void RotateTile(Vector3Int position, Tilemap tilemap)
+    {
+        Matrix4x4 rotationMatrix = Matrix4x4.Rotate(Quaternion.Euler(0, 0, _rotationAngle));
+        tilemap.SetTransformMatrix(position, rotationMatrix);
     }
 
     private Tile GetTileBasedOnNeighbors(Vector3Int position)
     {
-        if (_tileBase is ObjectStateTiles stateTiles)
-            return GetStateTile(position, stateTiles);
+        if (_selectedObjectPreview.ObjectTileBase is not ObjectStateTiles stateTiles)
+            return _selectedObjectPreview.Tile;
 
-        return _tileBase.Single;
+        var neighbors = GetNeighborsState(position);
+
+        string tileName = GetTileName(neighbors);
+
+        var tile = stateTiles.GetTile(tileName);
+        CalcRotationAngle(neighbors);
+
+        return tile;
     }
 
-    private Tile GetStateTile(Vector3Int position, ObjectStateTiles stateTiles)
+    private void RecalculateNeighborsRotation(Vector3Int position)
     {
-        bool hasTopNeighbor = HasNeighbor(position + Vector3Int.up);
-        bool hasBottomNeighbor = HasNeighbor(position + Vector3Int.down);
-        bool hasLeftNeighbor = HasNeighbor(position + Vector3Int.left);
-        bool hasRightNeighbor = HasNeighbor(position + Vector3Int.right);
+        Vector3Int[] directions = { Vector3Int.up, Vector3Int.down, Vector3Int.left, Vector3Int.right };
 
-        return stateTiles.GetTile((hasTopNeighbor, hasBottomNeighbor, hasLeftNeighbor, hasRightNeighbor) switch
+        foreach (var direction in directions)
+        {
+            Vector3Int neighborPosition = position + direction;
+            var neighborTile = _selectedObjectPreview.ObjectTilemap.GetTile(neighborPosition) as Tile;
+
+            if (neighborTile == null)
+                continue;
+
+            var neighbors = GetNeighborsState(neighborPosition);
+
+            var tileName = GetTileName(neighbors);
+
+            if (_selectedObjectPreview.ObjectTileBase is ObjectStateTiles stateTiles)
+            {
+                var tile = stateTiles.GetTile(tileName);
+
+                _selectedObjectPreview.ObjectTilemap.SetTile(neighborPosition, tile);
+                CalcRotationAngle(neighbors);
+                RotateTile(neighborPosition, _selectedObjectPreview.ObjectTilemap);
+            }
+        }
+    }
+
+    private void CalcRotationAngle((bool hasTop, bool hasBottom, bool hasLeft, bool hasRight) neighbors)
+    {
+        _rotationAngle = neighbors switch
+        {
+            (true, true, false, false) => 90f,
+            (true, false, false, true) => 270f,
+            (false, true, true, false) => 90f,
+            (false, true, false, true) => 180f,
+            (true, true, false, true) => 180f,
+            (true, false, true, true) => 270f,
+            (false, true, true, true) => 90f,
+            (true, false, false, false) => 270f,
+            (false, true, false, false) => 90f,
+            (false, false, false, true) => 180f,
+            _ => 0f,
+        };
+    }
+
+    private static string GetTileName((bool hasTop, bool hasBottom, bool hasLeft, bool hasRight) neighbors)
+    {
+        return neighbors switch
         {
             (true, true, false, false) => "straight",
             (false, false, true, true) => "straight",
@@ -67,14 +119,22 @@ public class PlaceTile
             (false, false, true, false) => "deadend",
             (false, false, false, true) => "deadend",
             _ => "single",
-        });
+        };
+    }
+
+    private (bool hasTop, bool hasBottom, bool hasLeft, bool hasRight) GetNeighborsState(Vector3Int position)
+    {
+        return (
+            HasNeighbor(position + Vector3Int.up),
+            HasNeighbor(position + Vector3Int.down),
+            HasNeighbor(position + Vector3Int.left),
+            HasNeighbor(position + Vector3Int.right)
+        );
     }
 
     private bool HasNeighbor(Vector3Int position)
     {
-        var neighborTile = _tilemap.GetTile(position) as Tile;
-        if (neighborTile == null) return false;
-
-        return neighborTile.name == _tileBase.Single.name;
+        var neighborTile = _selectedObjectPreview.ObjectTilemap.GetTile(position);
+        return neighborTile != null && neighborTile.GetType() == _selectedObjectPreview.Tile.GetType();
     }
 }

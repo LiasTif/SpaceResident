@@ -13,6 +13,7 @@ public class ObjectPreviewInitializer : MonoBehaviour
     public void PrimaryInit(SelectedObjectPreview selectedObjectPreview)
     {
         selectedObjectPreview.Tile = _elements.GetComponent<Wall>().Single;
+        selectedObjectPreview.ObjectTileBase = _elements.GetComponent<Wall>();
         selectedObjectPreview.Tilemap = _preViewTilemap;
         selectedObjectPreview.ObjectTilemap = _wallsTilemap;
     }

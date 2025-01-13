@@ -6,7 +6,7 @@ public abstract class TileUnderCoursor : MonoBehaviour
     public Tilemap Tilemap;
     public Tile Tile;
 
-    private Vector3Int previousTilePosition;
+    protected Vector3Int previousTilePosition;
 
     private void Update()
     {

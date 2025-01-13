@@ -1,6 +1,6 @@
 using UnityEngine.Tilemaps;
 
-public abstract class ObjectStateTiles : ObjectTileBase
+public class ObjectStateTiles : ObjectTileBase
 {
     public Tile Straight;
     public Tile DeadEnd;
@@ -14,7 +14,7 @@ public abstract class ObjectStateTiles : ObjectTileBase
         {
             "straight" => Straight,
             "deadend" => DeadEnd,
-            "tshaped" => Single,
+            "tshaped" => TShaped,
             "xshaped" => XShaped,
             "corner" => Corner,
             _ => Single,
