@@ -13,7 +13,8 @@ public class PlaceTile
 
     private float _rotationAngle;
 
-    public PlaceTile(SelectedObjectPreview selectedObjectPreview, Vector3Int start, Vector3Int end, ITilePlacementStrategy strategy, TileReservationManager reservationManager)
+    public PlaceTile(SelectedObjectPreview selectedObjectPreview,
+        Vector3Int start, Vector3Int end, ITilePlacementStrategy strategy, TileReservationManager reservationManager)
     {
         _selectedObjectPreview = selectedObjectPreview;
         _start = start;
