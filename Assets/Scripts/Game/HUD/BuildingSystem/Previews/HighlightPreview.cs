@@ -4,10 +4,6 @@ using UnityEngine.UIElements;
 
 public class HighlightPreview : TileUnderCoursor
 {
-    public Tile DenyTile;
-
-    private Vector3Int previousTilePosition;
-
     private TileReservationManager _reservationManager;
 
     private void Awake() => _reservationManager = new();
