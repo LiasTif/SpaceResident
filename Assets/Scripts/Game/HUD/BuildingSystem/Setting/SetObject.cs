@@ -13,9 +13,12 @@ public class SetObject : MonoBehaviour
     private ITilePlacementStrategy _placementStrategy;
     private TileReservationManager _reservationManager;
     private HUDInputActions _hudInputActions;
+    private TileDataManager _tileDataManager;
 
     private SelectedObjectPreview _objectPreviewComponent;
     private HighlightPreview _highlightPreviewComponent;
+
+    private ObjectTileBase _selectedTileBase;
 
     private void OnEnable() => _hudInputActions.HUD.Enable();
     private void OnDisable() => _hudInputActions.HUD.Disable();
@@ -32,6 +35,8 @@ public class SetObject : MonoBehaviour
     {
         _objectPreviewComponent = _selectedObjectPreview.GetComponent<SelectedObjectPreview>();
         _highlightPreviewComponent = _highlightPreview.GetComponent<HighlightPreview>();
+
+        _selectedTileBase = _objectPreviewComponent.SelectedTileBase;
     }
 
     private void Update()
@@ -75,8 +80,9 @@ public class SetObject : MonoBehaviour
     {
         Vector3Int endPosition = GetObjectPreviewWorldPosition();
 
-        PlaceTile placeTile = new(_objectPreviewComponent.ObjectTilemap, _objectPreviewComponent.Tile,
-            _startPosition, endPosition, _placementStrategy, _reservationManager);
+        _tileDataManager = new();
+        PlaceTile placeTile = new(_objectPreviewComponent.ObjectTilemap, _selectedTileBase,
+            _startPosition, endPosition, _placementStrategy, _reservationManager, _tileDataManager);
         placeTile.Place();
         
         DisablePreview();
