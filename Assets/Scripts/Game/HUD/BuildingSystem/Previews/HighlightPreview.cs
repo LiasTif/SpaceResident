@@ -1,6 +1,5 @@
 using UnityEngine;
 using UnityEngine.Tilemaps;
-using UnityEngine.UIElements;
 
 public class HighlightPreview : TileUnderCoursor
 {
@@ -29,6 +28,4 @@ public class HighlightPreview : TileUnderCoursor
 
         previousTilePosition = tilePosition;
     }
-
-    public void ClearPreviousTile() => Tilemap.SetTile(this.previousTilePosition, null);
 }

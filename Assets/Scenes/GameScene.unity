@@ -1500,9 +1500,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5090a75b0252ab446994d0e4bb76d7bc, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Tilemap: {fileID: 0}
+  Tilemap: {fileID: 2115154607}
   Tile: {fileID: 0}
   ObjectTilemap: {fileID: 0}
+  ObjectTileBase: {fileID: 0}
 --- !u!1 &330508585
 GameObject:
   m_ObjectHideFlags: 0
@@ -3036,10 +3037,10 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 829419340}
-  - component: {fileID: 829419344}
   - component: {fileID: 829419343}
   - component: {fileID: 829419342}
   - component: {fileID: 829419341}
+  - component: {fileID: 829419344}
   m_Layer: 0
   m_Name: Elements
   m_TagString: Untagged
@@ -3089,7 +3090,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   Single: {fileID: 11400000, guid: 79a9a210a60c35d4284985ee22383c97, type: 2}
-  Tilemap: {fileID: 0}
+  Tilemap: {fileID: 1537159535}
   Straight: {fileID: 11400000, guid: 5112849bd9fc5444b8e92578da71a7bf, type: 2}
   DeadEnd: {fileID: 11400000, guid: db8a7cf8f9564d940a5aa47dda762f50, type: 2}
   XShaped: {fileID: 11400000, guid: 99f46bd40ad890442bc65e02637ab4df, type: 2}
@@ -3108,7 +3109,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   Single: {fileID: 11400000, guid: 6de5c72c7b51f21498a3c07645a55e71, type: 2}
-  Tilemap: {fileID: 0}
+  Tilemap: {fileID: 1537159535}
   Straight: {fileID: 11400000, guid: c9724d5754373da48a34c75d3a16ab7f, type: 2}
   DeadEnd: {fileID: 11400000, guid: 29e0ccb4738c4b64e86078b24fb38ab5, type: 2}
   XShaped: {fileID: 11400000, guid: dd3fbc3cc5128af468b116992432cf0b, type: 2}

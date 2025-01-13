@@ -1,7 +1,7 @@
 using UnityEngine;
 using UnityEngine.Tilemaps;
 
-public abstract class ObjectTileBase : MonoBehaviour
+public class ObjectTileBase : MonoBehaviour
 {
     public Tile Single;
 

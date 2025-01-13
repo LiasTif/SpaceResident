@@ -75,8 +75,7 @@ public class SetObject : MonoBehaviour
     {
         Vector3Int endPosition = GetObjectPreviewWorldPosition();
 
-        PlaceTile placeTile = new(_objectPreviewComponent.ObjectTilemap, _objectPreviewComponent.Tile,
-            _startPosition, endPosition, _placementStrategy, _reservationManager);
+        PlaceTile placeTile = new(_objectPreviewComponent, _startPosition, endPosition, _placementStrategy, _reservationManager);
         placeTile.Place();
         
         DisablePreview();

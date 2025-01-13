@@ -35,5 +35,14 @@ public class SelectObject : MonoBehaviour
             "door" => _objectsTilemap,
             _ => throw new System.NotImplementedException(),
         };
+
+        selectedObjectPreview.ObjectTileBase = name switch
+        {
+            "wall" => _elements.GetComponent<Wall>(),
+            "glass" => _elements.GetComponent<Glass>(),
+            "floor" => _elements.GetComponent<Floor>(),
+            "door" => _elements.GetComponent<Door>(),
+            _ => throw new System.NotImplementedException(),
+        };
     }
 }
