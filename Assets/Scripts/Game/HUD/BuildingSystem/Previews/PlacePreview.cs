@@ -40,21 +40,12 @@ public class PlacePreview
         {
             if ((position.x - _startPosition.x) % (tileWidth) == 0 && (position.y - _startPosition.y) % (tileHeight) == 0)
             {
-                if (_reservationManager.AreCellsAvailable(_preview, position, tileWidth, tileHeight))
+                if (_reservationManager.AreCellsAvailable(_origin, position, tileWidth, tileHeight))
                 {
                     _preview.SetTile(position, _tile);
                     _highlightPreview.Tilemap.SetTile(position, _highlightPreview.Tile);
-
-                    if (!_reservationManager.AreCellsAvailable(_origin, position, tileWidth, tileHeight))
-                        ClearTileAtPosition(position);
                 }
             }
         }
-    }
-
-    private void ClearTileAtPosition(Vector3Int position)
-    {
-        _preview.SetTile(position, null);
-        _highlightPreview.Tilemap.SetTile(position, null);
     }
 }
