@@ -1,8 +1,30 @@
 using System.Collections.Generic;
+using UnityEngine.Tilemaps;
 using UnityEngine;
 
 public class FilledSquarePlacement : ITilePlacementStrategy
 {
+    public void Place(Tilemap tilemap, Vector3Int start, Vector3Int end, Tile tile, TileReservationManager reservationManager)
+    {
+        foreach (var position in GetPositions(start, end))
+        {
+            Vector2 spriteSize = tile.sprite.bounds.size * tile.sprite.pixelsPerUnit;
+            int tileWidth = Mathf.CeilToInt(spriteSize.x / 32f);
+            int tileHeight = Mathf.CeilToInt(spriteSize.y / 32f);
+
+            if (!reservationManager.AreCellsAvailable(tilemap, position, tileWidth, tileHeight))
+            {
+                Debug.Log("Cannot place tile: Some cells are already reserved.");
+                return;
+            }
+        }
+
+        foreach (var position in GetPositions(start, end))
+        {
+            reservationManager.PlaceTile(position, tile, tilemap);
+        }
+    }
+
     public IEnumerable<Vector3Int> GetPositions(Vector3Int start, Vector3Int end)
     {
         List<Vector3Int> positions = new();

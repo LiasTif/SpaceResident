@@ -1,5 +1,8 @@
+using System.Collections.Generic;
+using UnityEditor;
 using UnityEngine;
 using UnityEngine.EventSystems;
+using UnityEngine.Tilemaps;
 
 public class SetObject : MonoBehaviour
 {
@@ -7,85 +10,121 @@ public class SetObject : MonoBehaviour
     private GameObject _selectedObjectPreview;
     [SerializeField]
     private GameObject _highlightPreview;
+    [SerializeField]
+    private HUDInputActions _hudInputActions;
 
     private Vector3Int _startPosition;
+    private Vector3Int previousTilePosition;
+    private bool _isBuilding = false;
 
     private ITilePlacementStrategy _placementStrategy;
     private TileReservationManager _reservationManager;
+<<<<<<< HEAD
     private HUDInputActions _hudInputActions;
+    private TileDataManager _tileDataManager;
 
     private SelectedObjectPreview _objectPreviewComponent;
     private HighlightPreview _highlightPreviewComponent;
 
+    private ObjectTileBase _selectedTileBase;
+
     private void OnEnable() => _hudInputActions.HUD.Enable();
     private void OnDisable() => _hudInputActions.HUD.Disable();
+=======
+>>>>>>> parent of 71d8f48 (Merge branch 'TilesPreview' into building-system)
 
     private void Awake()
     {
         _hudInputActions = new();
         _reservationManager = new();
-
-        InitializePreviews();
     }
 
+<<<<<<< HEAD
     private void InitializePreviews()
     {
         _objectPreviewComponent = _selectedObjectPreview.GetComponent<SelectedObjectPreview>();
         _highlightPreviewComponent = _highlightPreview.GetComponent<HighlightPreview>();
+
+        _selectedTileBase = _objectPreviewComponent.SelectedTileBase;
     }
+=======
+    private void OnEnable() => _hudInputActions.HUD.Enable();
+    private void OnDisable() => _hudInputActions.HUD.Disable();
+>>>>>>> parent of 71d8f48 (Merge branch 'TilesPreview' into building-system)
 
     private void Update()
     {
-        if (EventSystem.current.IsPointerOverGameObject())
-        {
-            ClearPreviewTilemaps();
-            return;
-        }
+        if (EventSystem.current.IsPointerOverGameObject()) return;
 
         if (Input.GetMouseButtonDown(0)) StartBuilding();
-        if (Input.GetMouseButton(0)) UpdatePreview();
+        if (Input.GetMouseButton(0) && _isBuilding) UpdatePreview();
         if (Input.GetMouseButtonUp(0)) FinishBuilding();
     }
 
     private void StartBuilding()
     {
-        _startPosition = GetObjectPreviewWorldPosition();
-        _highlightPreview.SetActive(false);
+        var preview = _selectedObjectPreview.GetComponent<SelectedObjectPreview>();
+        _startPosition = preview.ObjectTilemap.WorldToCell(GetMouseWorldPosition());
+        _isBuilding = true;
     }
 
     private void UpdatePreview()
     {
-        Vector3Int endPosition = GetPreviewWorldPosition();
+        var preview = _selectedObjectPreview.GetComponent<SelectedObjectPreview>();
+        var tilemap = preview.ObjectTilemap;
 
-        ClearPreviewTilemaps();
+        Vector3Int mousePosition = tilemap.WorldToCell(GetMouseWorldPosition());
+        Vector3Int endPosition = mousePosition;
+
         SetPlacementStrategy();
 
-        PlacePreview placePreview = new(_objectPreviewComponent.ObjectTilemap, _objectPreviewComponent.Tilemap, _objectPreviewComponent.Tile,
-            _startPosition, endPosition, _placementStrategy, _reservationManager, _highlightPreview);
-        placePreview.Place();
+        IEnumerable<Vector3Int> positionsToHighlight = _placementStrategy?.GetPositions(_startPosition, endPosition);
+
+        var highlight = _highlightPreview.GetComponent<HighlightPreview>();
+
+        if (positionsToHighlight != null)
+        {
+            foreach (var position in positionsToHighlight)
+            {
+                if (_reservationManager.IsCellAvailable(tilemap, position))
+                    HighlightTile(position, highlight.Tile);
+                else
+                    HighlightTile(position, highlight.DenyTile);
+            }
+        }
     }
 
-    private void ClearPreviewTilemaps()
+    private void ClearTilemap(Tilemap tilemap) => tilemap.ClearAllTiles();
+
+    private void HighlightTile(Vector3Int position, Tile tile)
     {
-        _objectPreviewComponent.Tilemap.ClearAllTiles();
-        _highlightPreviewComponent.Tilemap.ClearAllTiles();
+        var highlightPreview = _highlightPreview.GetComponent<HighlightPreview>();
+        highlightPreview.Tilemap.SetTile(position, tile);
     }
 
     private void FinishBuilding()
     {
-        Vector3Int endPosition = GetObjectPreviewWorldPosition();
+        _isBuilding = false;
 
-        PlaceTile placeTile = new(_objectPreviewComponent.ObjectTilemap, _objectPreviewComponent.Tile,
-            _startPosition, endPosition, _placementStrategy, _reservationManager);
+<<<<<<< HEAD
+        _tileDataManager = new();
+        PlaceTile placeTile = new(_objectPreviewComponent.ObjectTilemap, _selectedTileBase,
+            _startPosition, endPosition, _placementStrategy, _reservationManager, _tileDataManager);
         placeTile.Place();
         
         DisablePreview();
     }
+=======
+        var preview = _selectedObjectPreview.GetComponent<SelectedObjectPreview>();
+        var tilemap = preview.ObjectTilemap;
+        Vector3Int endPosition = tilemap.WorldToCell(GetMouseWorldPosition());
+>>>>>>> parent of 71d8f48 (Merge branch 'TilesPreview' into building-system)
 
-    private void DisablePreview()
-    {
-        ClearPreviewTilemaps();
-        _highlightPreview.SetActive(true);
+        SetPlacementStrategy();
+        _placementStrategy?.Place(tilemap, _startPosition, endPosition, preview.Tile, _reservationManager);
+
+        var highlight = _highlightPreview.GetComponent<HighlightPreview>();
+        ClearTilemap(highlight.Tilemap);
     }
 
     private void SetPlacementStrategy()
@@ -100,10 +139,4 @@ public class SetObject : MonoBehaviour
 
     private Vector3 GetMouseWorldPosition() =>
         Camera.main.ScreenToWorldPoint(Input.mousePosition);
-
-    private Vector3Int GetObjectPreviewWorldPosition() =>
-        _objectPreviewComponent.ObjectTilemap.WorldToCell(GetMouseWorldPosition());
-
-    private Vector3Int GetPreviewWorldPosition() =>
-        _objectPreviewComponent.Tilemap.WorldToCell(GetMouseWorldPosition());
 }
