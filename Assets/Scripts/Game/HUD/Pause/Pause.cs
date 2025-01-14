@@ -28,4 +28,6 @@ public class Pause : MonoBehaviour
 
         Debug.Log($"Pause: {pause}");
     }
+
+    public void TogglePause() => TogglePause(!_pauseMenu.activeSelf);
 }
