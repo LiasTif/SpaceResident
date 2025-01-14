@@ -44,6 +44,24 @@ public partial class @HUDInputActions: IInputActionCollection2, IDisposable
                     ""processors"": """",
                     ""interactions"": """",
                     ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""FirstActionButton"",
+                    ""type"": ""Button"",
+                    ""id"": ""4a450cfc-13ca-4f83-994e-ad26da52ff5a"",
+                    ""expectedControlType"": """",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""SecondActionButton"",
+                    ""type"": ""Button"",
+                    ""id"": ""9f4ab144-fb25-41a9-b41c-0042d8dc40ac"",
+                    ""expectedControlType"": """",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
                 }
             ],
             ""bindings"": [
@@ -68,6 +86,28 @@ public partial class @HUDInputActions: IInputActionCollection2, IDisposable
                     ""action"": ""BuildingElementsSelection"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""1db32515-ebdc-4532-a560-3c4b5bece566"",
+                    ""path"": ""<Keyboard>/ctrl"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""FirstActionButton"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""65d265b6-20d2-44ed-9b90-4c5d2d9083c4"",
+                    ""path"": ""<Keyboard>/shift"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""SecondActionButton"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
                 }
             ]
         }
@@ -78,6 +118,8 @@ public partial class @HUDInputActions: IInputActionCollection2, IDisposable
         m_HUD = asset.FindActionMap("HUD", throwIfNotFound: true);
         m_HUD_Pause = m_HUD.FindAction("Pause", throwIfNotFound: true);
         m_HUD_BuildingElementsSelection = m_HUD.FindAction("BuildingElementsSelection", throwIfNotFound: true);
+        m_HUD_FirstActionButton = m_HUD.FindAction("FirstActionButton", throwIfNotFound: true);
+        m_HUD_SecondActionButton = m_HUD.FindAction("SecondActionButton", throwIfNotFound: true);
     }
 
     ~@HUDInputActions()
@@ -146,12 +188,16 @@ public partial class @HUDInputActions: IInputActionCollection2, IDisposable
     private List<IHUDActions> m_HUDActionsCallbackInterfaces = new List<IHUDActions>();
     private readonly InputAction m_HUD_Pause;
     private readonly InputAction m_HUD_BuildingElementsSelection;
+    private readonly InputAction m_HUD_FirstActionButton;
+    private readonly InputAction m_HUD_SecondActionButton;
     public struct HUDActions
     {
         private @HUDInputActions m_Wrapper;
         public HUDActions(@HUDInputActions wrapper) { m_Wrapper = wrapper; }
         public InputAction @Pause => m_Wrapper.m_HUD_Pause;
         public InputAction @BuildingElementsSelection => m_Wrapper.m_HUD_BuildingElementsSelection;
+        public InputAction @FirstActionButton => m_Wrapper.m_HUD_FirstActionButton;
+        public InputAction @SecondActionButton => m_Wrapper.m_HUD_SecondActionButton;
         public InputActionMap Get() { return m_Wrapper.m_HUD; }
         public void Enable() { Get().Enable(); }
         public void Disable() { Get().Disable(); }
@@ -167,6 +213,12 @@ public partial class @HUDInputActions: IInputActionCollection2, IDisposable
             @BuildingElementsSelection.started += instance.OnBuildingElementsSelection;
             @BuildingElementsSelection.performed += instance.OnBuildingElementsSelection;
             @BuildingElementsSelection.canceled += instance.OnBuildingElementsSelection;
+            @FirstActionButton.started += instance.OnFirstActionButton;
+            @FirstActionButton.performed += instance.OnFirstActionButton;
+            @FirstActionButton.canceled += instance.OnFirstActionButton;
+            @SecondActionButton.started += instance.OnSecondActionButton;
+            @SecondActionButton.performed += instance.OnSecondActionButton;
+            @SecondActionButton.canceled += instance.OnSecondActionButton;
         }
 
         private void UnregisterCallbacks(IHUDActions instance)
@@ -177,6 +229,12 @@ public partial class @HUDInputActions: IInputActionCollection2, IDisposable
             @BuildingElementsSelection.started -= instance.OnBuildingElementsSelection;
             @BuildingElementsSelection.performed -= instance.OnBuildingElementsSelection;
             @BuildingElementsSelection.canceled -= instance.OnBuildingElementsSelection;
+            @FirstActionButton.started -= instance.OnFirstActionButton;
+            @FirstActionButton.performed -= instance.OnFirstActionButton;
+            @FirstActionButton.canceled -= instance.OnFirstActionButton;
+            @SecondActionButton.started -= instance.OnSecondActionButton;
+            @SecondActionButton.performed -= instance.OnSecondActionButton;
+            @SecondActionButton.canceled -= instance.OnSecondActionButton;
         }
 
         public void RemoveCallbacks(IHUDActions instance)
@@ -198,5 +256,7 @@ public partial class @HUDInputActions: IInputActionCollection2, IDisposable
     {
         void OnPause(InputAction.CallbackContext context);
         void OnBuildingElementsSelection(InputAction.CallbackContext context);
+        void OnFirstActionButton(InputAction.CallbackContext context);
+        void OnSecondActionButton(InputAction.CallbackContext context);
     }
 }
