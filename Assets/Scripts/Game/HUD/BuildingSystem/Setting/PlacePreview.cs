@@ -1,5 +1,6 @@
 using UnityEngine;
 using UnityEngine.Tilemaps;
+using UnityEngine.UIElements;
 
 public class PlacePreview
 {
@@ -44,6 +45,15 @@ public class PlacePreview
                 {
                     _preview.SetTile(position, _tile);
                     _highlightPreview.Tilemap.SetTile(position, _highlightPreview.Tile);
+
+                    //BuildPreviewSize buildPreviewSize = new();
+                    //int sizeX = position.x - _startPosition.x;
+                    //int sizeY = position.y - _startPosition.y;
+
+                    //if (_placementStrategy is LinePlacement)
+                    //    buildPreviewSize.UpdateSize(sizeX, sizeX > sizeY);
+                    //else
+                    //    buildPreviewSize.UpdateSize(sizeX, sizeY);
                 }
             }
         }

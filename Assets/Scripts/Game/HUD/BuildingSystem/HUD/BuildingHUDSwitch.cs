@@ -10,6 +10,8 @@ public class BuildingSwitch : MonoBehaviour
     private GameObject _previewsSwitch;
     [SerializeField]
     private GameObject _setObject;
+    [SerializeField]
+    private GameObject _previewSize;
 
     private void Start() => SwitchSetObject(false);
 
@@ -18,6 +20,7 @@ public class BuildingSwitch : MonoBehaviour
         SwitchHUDsState();
         SwitchPreview();
         SwitchSetObject();
+        SwitchPreviewSize();
     }
     // використати патерн підписник для виключання інших худів та худу гравця,
     // щоб уникнути накладання декількох худів
@@ -30,8 +33,10 @@ public class BuildingSwitch : MonoBehaviour
     }
 
     private void SwitchSetObject() => SwitchSetObject(!_setObject.activeSelf);
-
     private void SwitchSetObject(bool state) => _setObject.SetActive(state);
+
+    private void SwitchPreviewSize() => SwitchPreviewSize(!_previewSize.activeSelf);
+    private void SwitchPreviewSize(bool state) => _previewSize.SetActive(state);
 
     private void SwitchHUDsState()
     {
