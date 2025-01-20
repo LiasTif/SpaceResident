@@ -13,7 +13,11 @@ public class BuildingSwitch : MonoBehaviour
     [SerializeField]
     private GameObject _previewSize;
 
-    private void Start() => SwitchSetObject(false);
+    private void Start()
+    {
+        SwitchSetObject(false);
+        SwitchPreviewSize(false);
+    }
 
     public void Switch()
     {

@@ -97,12 +97,9 @@ public class SetObject : MonoBehaviour
             _placementStrategy = new LinePlacement();
     }
 
-    private Vector3 GetMouseWorldPosition() =>
-        Camera.main.ScreenToWorldPoint(Input.mousePosition);
-
     private Vector3Int GetObjectPreviewWorldPosition() =>
-        _objectPreviewComponent.ObjectTilemap.WorldToCell(GetMouseWorldPosition());
+        _objectPreviewComponent.ObjectTilemap.WorldToCell(MouseWorldPositionProvider.GetMouseWorldPosition());
 
     private Vector3Int GetPreviewWorldPosition() =>
-        _objectPreviewComponent.Tilemap.WorldToCell(GetMouseWorldPosition());
+        _objectPreviewComponent.Tilemap.WorldToCell(MouseWorldPositionProvider.GetMouseWorldPosition());
 }
