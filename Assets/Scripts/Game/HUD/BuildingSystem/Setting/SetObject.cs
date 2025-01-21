@@ -1,3 +1,5 @@
+using System.Collections.Generic;
+using TMPro;
 using UnityEngine;
 using UnityEngine.EventSystems;
 
@@ -36,7 +38,7 @@ public class SetObject : MonoBehaviour
 
     private void Update()
     {
-        if (EventSystem.current.IsPointerOverGameObject())
+        if (EventSystem.current.IsPointerOverGameObject() && !IsPointerOverText())
         {
             ClearPreviewTilemaps();
             return;
@@ -45,6 +47,22 @@ public class SetObject : MonoBehaviour
         if (Input.GetMouseButtonDown(0)) StartBuilding();
         if (Input.GetMouseButton(0)) UpdatePreview();
         if (Input.GetMouseButtonUp(0)) FinishBuilding();
+    }
+
+    private bool IsPointerOverText()
+    {
+        PointerEventData pointerData = new(EventSystem.current) { position = Input.mousePosition };
+        List<RaycastResult> results = new();
+
+        EventSystem.current.RaycastAll(pointerData, results);
+
+        foreach (var result in results)
+        {
+            if (result.gameObject.GetComponent<TMP_Text>() != null)
+                return true;
+        }
+
+        return false;
     }
 
     private void StartBuilding()

@@ -9,7 +9,7 @@ public class BuildPreviewSize : MonoBehaviour
     private void Update()
     {
         Vector2 offset = MouseWorldPositionProvider.GetMouseWorldPosition();
-        _text.transform.position = new Vector2(offset.x, offset.y + 0.2f);
+        _text.transform.position = new Vector3(offset.x, offset.y + 0.2f, -1f);
     }
 
     public void UpdateSize(int x, int y) => _text.text = $"{x}w // {y}l";
