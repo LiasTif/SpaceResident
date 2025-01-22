@@ -1,6 +1,5 @@
 using UnityEngine;
 using UnityEngine.Tilemaps;
-using UnityEngine.UIElements;
 
 public class PlacePreview
 {
@@ -15,11 +14,12 @@ public class PlacePreview
     private readonly ITilePlacementStrategy _placementStrategy;
 
     private readonly TileReservationManager _reservationManager;
-
     private readonly HighlightPreview _highlightPreview;
+    private readonly BuildPreviewSize _buildPreviewSize;
 
     public PlacePreview(Tilemap origin, Tilemap preview, Tile tile, Vector3Int start, Vector3Int end,
-        ITilePlacementStrategy placementStrategy, TileReservationManager reservationManager, GameObject highlightPreview)
+        ITilePlacementStrategy placementStrategy, TileReservationManager reservationManager, GameObject highlightPreview,
+        BuildPreviewSize buildPreviewSize)
     {
         _origin = origin;
         _preview = preview;
@@ -29,6 +29,7 @@ public class PlacePreview
         _placementStrategy = placementStrategy;
         _reservationManager = reservationManager;
         _highlightPreview = highlightPreview.GetComponent<HighlightPreview>();
+        _buildPreviewSize = buildPreviewSize;
     }
 
     public void Place()
@@ -45,17 +46,23 @@ public class PlacePreview
                 {
                     _preview.SetTile(position, _tile);
                     _highlightPreview.Tilemap.SetTile(position, _highlightPreview.Tile);
-
-                    //BuildPreviewSize buildPreviewSize = new();
-                    //int sizeX = position.x - _startPosition.x;
-                    //int sizeY = position.y - _startPosition.y;
-
-                    //if (_placementStrategy is LinePlacement)
-                    //    buildPreviewSize.UpdateSize(sizeX, sizeX > sizeY);
-                    //else
-                    //    buildPreviewSize.UpdateSize(sizeX, sizeY);
+                    UpdateBuildPreviewSize();
                 }
             }
         }
+    }
+
+    private void UpdateBuildPreviewSize()
+    {
+        int sizeX = Mathf.Abs(_endPosition.x - _startPosition.x) + 1;
+        int sizeY = Mathf.Abs(_endPosition.y - _startPosition.y) + 1;
+
+        if (_placementStrategy is LinePlacement)
+            if (sizeX > sizeY)
+                _buildPreviewSize.UpdateSize(sizeX, false);
+            else
+                _buildPreviewSize.UpdateSize(sizeY, true);
+        else
+            _buildPreviewSize.UpdateSize(sizeX, sizeY);
     }
 }

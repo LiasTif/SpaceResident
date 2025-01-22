@@ -9,6 +9,8 @@ public class SetObject : MonoBehaviour
     private GameObject _selectedObjectPreview;
     [SerializeField]
     private GameObject _highlightPreview;
+    [SerializeField]
+    private GameObject _buildPreviewSize;
 
     private Vector3Int _startPosition;
 
@@ -78,8 +80,10 @@ public class SetObject : MonoBehaviour
         ClearPreviewTilemaps();
         SetPlacementStrategy();
 
+        var buildPreviewSize = _buildPreviewSize.GetComponent<BuildPreviewSize>();
+
         PlacePreview placePreview = new(_objectPreviewComponent.ObjectTilemap, _objectPreviewComponent.Tilemap, _objectPreviewComponent.Tile,
-            _startPosition, endPosition, _placementStrategy, _reservationManager, _highlightPreview);
+            _startPosition, endPosition, _placementStrategy, _reservationManager, _highlightPreview, buildPreviewSize);
         placePreview.Place();
     }
 
