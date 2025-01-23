@@ -20,6 +20,7 @@ public class SetObject : MonoBehaviour
 
     private SelectedObjectPreview _objectPreviewComponent;
     private HighlightPreview _highlightPreviewComponent;
+    private BuildPreviewSize _buildPreviewSizeInstance;
 
     private void OnEnable() => _hudInputActions.HUD.Enable();
     private void OnDisable() => _hudInputActions.HUD.Disable();
@@ -36,6 +37,7 @@ public class SetObject : MonoBehaviour
     {
         _objectPreviewComponent = _selectedObjectPreview.GetComponent<SelectedObjectPreview>();
         _highlightPreviewComponent = _highlightPreview.GetComponent<HighlightPreview>();
+        _buildPreviewSizeInstance =  _buildPreviewSize.GetComponent<BuildPreviewSize>();
     }
 
     private void Update()
@@ -80,10 +82,8 @@ public class SetObject : MonoBehaviour
         ClearPreviewTilemaps();
         SetPlacementStrategy();
 
-        var buildPreviewSize = _buildPreviewSize.GetComponent<BuildPreviewSize>();
-
         PlacePreview placePreview = new(_objectPreviewComponent.ObjectTilemap, _objectPreviewComponent.Tilemap, _objectPreviewComponent.Tile,
-            _startPosition, endPosition, _placementStrategy, _reservationManager, _highlightPreview, buildPreviewSize);
+            _startPosition, endPosition, _placementStrategy, _reservationManager, _highlightPreview, _buildPreviewSizeInstance);
         placePreview.Place();
     }
 
@@ -97,7 +97,8 @@ public class SetObject : MonoBehaviour
     {
         Vector3Int endPosition = GetObjectPreviewWorldPosition();
 
-        PlaceTile placeTile = new(_objectPreviewComponent, _startPosition, endPosition, _placementStrategy, _reservationManager);
+        PlaceTile placeTile = new(_objectPreviewComponent, _startPosition, endPosition, _placementStrategy, _reservationManager,
+            _buildPreviewSizeInstance);
         placeTile.Place();
         
         DisablePreview();

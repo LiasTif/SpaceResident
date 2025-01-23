@@ -14,4 +14,6 @@ public class BuildPreviewSize : MonoBehaviour
 
     public void UpdateSize(int x, int y) => _text.GetComponent<TMP_Text>().text = $"{x}w // {y}l";
     public void UpdateSize(int length, bool vertical) => _text.GetComponent<TMP_Text>().text = vertical ? $"{length}l" : $"{length}w";
+
+    public void Clear() => _text.GetComponent<TMP_Text>().text = string.Empty;
 }
