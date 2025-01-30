@@ -32,7 +32,7 @@ public class SelectObject : MonoBehaviour
             "wall" => _wallsTilemap,
             "glass" => _wallsTilemap,
             "floor" => _floorTilemap,
-            "door" => _objectsTilemap,
+            "door" => _wallsTilemap,
             _ => throw new System.NotImplementedException(),
         };
 
