@@ -28,14 +28,13 @@ public class PlaceTile
 
     public void Place()
     {
-        _selectedObjectPreview.SetSelectedTile(_selectedObjectPreview.Tile);
-
         foreach (var position in _strategy.GetPositions(_start, _end))
         {
             var tileToPlace = GetTileBasedOnNeighbors(position);
             _reservationManager.PlaceTile(position, tileToPlace, _selectedObjectPreview.ObjectTilemap);
             RotateTile(position, _selectedObjectPreview.ObjectTilemap);
             RecalculateNeighborsRotation(position);
+            _buildPreviewSize.Clear();
         }
     }
 
@@ -67,20 +66,20 @@ public class PlaceTile
         foreach (var direction in directions)
         {
             Vector3Int neighborPosition = position + direction;
-            var neighborTileBase = _selectedObjectPreview.ObjectTilemap.GetTile(neighborPosition);
+            var neighborTile = _selectedObjectPreview.ObjectTilemap.GetTile(neighborPosition) as Tile;
 
-            if (neighborTileBase == null) continue;
-
-            ObjectStateTiles stateTiles = _selectedObjectPreview.GetStateTilesFor(neighborTileBase);
-            if (stateTiles == null) continue;
+            if (neighborTile == null)
+                continue;
 
             var neighbors = GetNeighborsState(neighborPosition);
-            string tileName = GetTileName(neighbors);
-            var updatedTile = stateTiles.GetTile(tileName);
 
-            if (updatedTile != null && updatedTile != neighborTileBase)
+            var tileName = GetTileName(neighbors);
+
+            if (_selectedObjectPreview.ObjectTileBase is ObjectStateTiles stateTiles)
             {
-                _selectedObjectPreview.ObjectTilemap.SetTile(neighborPosition, updatedTile);
+                var tile = stateTiles.GetTile(tileName);
+
+                _selectedObjectPreview.ObjectTilemap.SetTile(neighborPosition, tile);
                 CalcRotationAngle(neighbors);
                 RotateTile(neighborPosition, _selectedObjectPreview.ObjectTilemap);
             }
@@ -128,7 +127,7 @@ public class PlaceTile
         };
     }
 
-    private (bool top, bool bottom, bool left, bool right) GetNeighborsState(Vector3Int position)
+    private (bool hasTop, bool hasBottom, bool hasLeft, bool hasRight) GetNeighborsState(Vector3Int position)
     {
         return (
             HasNeighbor(position + Vector3Int.up),
