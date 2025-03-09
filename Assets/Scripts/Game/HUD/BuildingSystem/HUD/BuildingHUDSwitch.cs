@@ -3,9 +3,7 @@
 public class BuildingSwitch : MonoBehaviour
 {
     [SerializeField]
-    private GameObject _playerHUD;
-    [SerializeField]
-    private GameObject _buildingHUD;
+    private GameObject _hudActive;
     [SerializeField]
     private GameObject _previewsSwitch;
     [SerializeField]
@@ -44,9 +42,8 @@ public class BuildingSwitch : MonoBehaviour
 
     private void SwitchHUDsState()
     {
-        var state = _playerHUD.activeSelf;
+        var hudActive = _hudActive.GetComponent<HUDActive>();
 
-        _buildingHUD.SetActive(state);
-        _playerHUD.SetActive(!state);
+        hudActive.ActivateHUD("building");
     }
 }
