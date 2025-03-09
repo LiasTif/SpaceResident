@@ -2,6 +2,7 @@ using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
 using UnityEngine.EventSystems;
+using static TMPro.SpriteAssetUtilities.TexturePacker_JsonArray;
 
 public class SetObject : MonoBehaviour
 {
@@ -96,12 +97,28 @@ public class SetObject : MonoBehaviour
 
     private void SetPlacementStrategy()
     {
+        if (SetDefaultStrategy()) return;
+
         if (_hudInputActions.HUD.FirstActionButton.IsPressed() && _hudInputActions.HUD.SecondActionButton.IsPressed())
             _placementStrategy = new FilledSquarePlacement();
         else if (_hudInputActions.HUD.FirstActionButton.IsPressed())
             _placementStrategy = new HollowSquarePlacement();
         else
             _placementStrategy = new LinePlacement();
+    }
+
+    private bool SetDefaultStrategy()
+    {
+        var tile = _objectPreviewComponent.Tile;
+        Vector2 spriteSize = tile.sprite.bounds.size * tile.sprite.pixelsPerUnit;
+
+        if (spriteSize.x != 32 || spriteSize.y != 32)
+        {
+            _placementStrategy = new LinePlacement();
+            return true;
+        }
+
+        return false;
     }
 
     private Vector3Int GetObjectPreviewWorldPosition() =>
