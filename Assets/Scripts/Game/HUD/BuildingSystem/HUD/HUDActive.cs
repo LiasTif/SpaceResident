@@ -8,7 +8,7 @@ public class HUDActive : MonoBehaviour
     [SerializeField]
     private GameObject _buildingHUD;
 
-    private List<GameObject> _huds = new();
+    private readonly List<GameObject> _huds = new();
 
     private void Start() => InitializeHUDS();
 
@@ -20,13 +20,27 @@ public class HUDActive : MonoBehaviour
 
     public void ActivateHUD(string hudName)
     {
-        DisableHUDs();
-
-        switch (hudName)
+        if (hudName == "building" && _buildingHUD.activeSelf == false)
         {
-            case "player": _playerHUD.SetActive(true); break;
-            case "building": _buildingHUD.SetActive(true); break;
+            DisableHUDs();
+            _buildingHUD.SetActive(true);
         }
+        else if (hudName == "player" && !_playerHUD.activeSelf == false)
+        {
+            DisableHUDs();
+            _playerHUD.SetActive(true);
+        }
+        else
+        {
+            DisableHUDs();
+            _playerHUD.SetActive(true);
+        }
+
+        //switch (hudName)
+        //{
+        //    case "player": _playerHUD.SetActive(true); break;
+        //    case "building": _buildingHUD.SetActive(true); break;
+        //}
     }
 
     private void DisableHUDs()

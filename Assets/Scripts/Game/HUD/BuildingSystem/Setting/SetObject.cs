@@ -1,8 +1,5 @@
-using System.Collections.Generic;
-using TMPro;
 using UnityEngine;
 using UnityEngine.EventSystems;
-using static TMPro.SpriteAssetUtilities.TexturePacker_JsonArray;
 
 public class SetObject : MonoBehaviour
 {
@@ -45,7 +42,7 @@ public class SetObject : MonoBehaviour
     {
         if (EventSystem.current.IsPointerOverGameObject())
         {
-            ClearPreviewTilemaps();
+            ClearPreviews();
             return;
         }
 
@@ -64,7 +61,7 @@ public class SetObject : MonoBehaviour
     {
         Vector3Int endPosition = GetPreviewWorldPosition();
 
-        ClearPreviewTilemaps();
+        ClearPreviews();
         SetPlacementStrategy();
 
         PlacePreview placePreview = new(_objectPreviewComponent.ObjectTilemap, _objectPreviewComponent.Tilemap, _objectPreviewComponent.Tile,
@@ -72,10 +69,10 @@ public class SetObject : MonoBehaviour
         placePreview.Place();
     }
 
-    private void ClearPreviewTilemaps()
+    private void ClearPreviews()
     {
-        _objectPreviewComponent.Tilemap.ClearAllTiles();
-        _highlightPreviewComponent.Tilemap.ClearAllTiles();
+        ClearPreview.Tilemap = _objectPreviewComponent.Tilemap;
+        ClearPreview.Clear(_highlightPreviewComponent);
     }
 
     private void FinishBuilding()
@@ -91,7 +88,7 @@ public class SetObject : MonoBehaviour
 
     private void DisablePreview()
     {
-        ClearPreviewTilemaps();
+        ClearPreviews();
         _highlightPreview.SetActive(true);
     }
 
