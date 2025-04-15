@@ -10,5 +10,5 @@ public static class ClearPreview
         highlightPreviewComponent.Tilemap.ClearAllTiles();
     }
 
-    public static void Clear() => Tilemap.ClearAllTiles();
+    public static void Clear() => Tilemap?.ClearAllTiles();
 }
