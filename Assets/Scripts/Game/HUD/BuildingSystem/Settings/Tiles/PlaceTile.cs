@@ -14,6 +14,11 @@ public class PlaceTile
 
     private float _rotationAngle;
 
+    public PlaceTile(SelectedObjectPreview selectedObjectPreview)
+    {
+        _selectedObjectPreview = selectedObjectPreview;
+    }
+
     public PlaceTile(SelectedObjectPreview selectedObjectPreview,
         Vector3Int start, Vector3Int end, ITilePlacementStrategy strategy,
         TileReservationManager reservationManager, BuildPreviewSize buildPreviewSize)
@@ -32,8 +37,10 @@ public class PlaceTile
         {
             var tileToPlace = GetTileBasedOnNeighbors(position);
             _reservationManager.PlaceTile(position, tileToPlace, _selectedObjectPreview.ObjectTilemap);
+
             RotateTile(position, _selectedObjectPreview.ObjectTilemap);
             RecalculateNeighborsRotation(position);
+
             _buildPreviewSize.Clear();
         }
     }
@@ -59,7 +66,7 @@ public class PlaceTile
         return tile;
     }
 
-    private void RecalculateNeighborsRotation(Vector3Int position)
+    public void RecalculateNeighborsRotation(Vector3Int position)
     {
         Vector3Int[] directions = { Vector3Int.up, Vector3Int.down, Vector3Int.left, Vector3Int.right };
 
