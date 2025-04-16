@@ -27,14 +27,17 @@ public class SetObject : MonoBehaviour
     {
         _hudInputActions = new();
         _reservationManager = new();
-
-        InitializePreviews();
     }
+
+    private void Start() => InitializePreviews();
 
     private void InitializePreviews()
     {
         _objectPreviewComponent = _selectedObjectPreview.GetComponent<SelectedObjectPreview>();
+
         _highlightPreviewComponent = _highlightPreview.GetComponent<HighlightPreview>();
+        _highlightPreviewComponent.SetBuildTile();
+
         _buildPreviewSizeInstance =  _buildPreviewSize.GetComponent<BuildPreviewSize>();
     }
 

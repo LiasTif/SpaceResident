@@ -17,16 +17,25 @@ public class SelectObject : MonoBehaviour
     public void Select(string name)
     {
         var selectedObjectPreview = _selectedObjectPreview.GetComponent<SelectedObjectPreview>();
+        SetTile(name, selectedObjectPreview);
+        SetObjectTilemap(name, selectedObjectPreview);
+        SetObjectTileBase(name, selectedObjectPreview);
+    }
 
-        selectedObjectPreview.Tile = name switch
+    private void SetObjectTileBase(string name, SelectedObjectPreview selectedObjectPreview)
+    {
+        selectedObjectPreview.ObjectTileBase = name switch
         {
-            "wall" => _elements.GetComponent<Wall>().Single,
-            "glass" => _elements.GetComponent<Glass>().Single,
-            "floor" => _elements.GetComponent<Floor>().Single,
-            "door" => _elements.GetComponent<Door>().Single,
+            "wall" => _elements.GetComponent<Wall>(),
+            "glass" => _elements.GetComponent<Glass>(),
+            "floor" => _elements.GetComponent<Floor>(),
+            "door" => _elements.GetComponent<Door>(),
             _ => throw new System.NotImplementedException(),
         };
+    }
 
+    private void SetObjectTilemap(string name, SelectedObjectPreview selectedObjectPreview)
+    {
         selectedObjectPreview.ObjectTilemap = name switch
         {
             "wall" => _wallsTilemap,
@@ -35,14 +44,17 @@ public class SelectObject : MonoBehaviour
             "door" => _wallsTilemap,
             _ => throw new System.NotImplementedException(),
         };
+    }
 
-        selectedObjectPreview.ObjectTileBase = name switch
+    private void SetTile(string name, SelectedObjectPreview selectedObjectPreview)
+    {
+        selectedObjectPreview.Tile = name switch
         {
-            "wall" => _elements.GetComponent<Wall>(),
-            "glass" => _elements.GetComponent<Glass>(),
-            "floor" => _elements.GetComponent<Floor>(),
-            "door" => _elements.GetComponent<Door>(),
-            _ => throw new System.NotImplementedException(),
+            "wall" => _elements.GetComponent<Wall>().Single,
+            "glass" => _elements.GetComponent<Glass>().Single,
+            "floor" => _elements.GetComponent<Floor>().Single,
+            "door" => _elements.GetComponent<Door>().Single,
+            _ => null,
         };
     }
 }

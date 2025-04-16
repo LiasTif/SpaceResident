@@ -597,6 +597,7 @@ MonoBehaviour:
   _walls: {fileID: 1537159535}
   _objects: {fileID: 268898928}
   _floor: {fileID: 270502505}
+  _selectedObjectPreview: {fileID: 324889276}
 --- !u!1 &131711233
 GameObject:
   m_ObjectHideFlags: 0
@@ -944,7 +945,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _setObject: {fileID: 1410828599}
   _removeObject: {fileID: 116539948}
-  _removeButtonText: {fileID: 0}
+  _removeButtonText: {fileID: 1765178030}
 --- !u!1 &268898925
 GameObject:
   m_ObjectHideFlags: 0
@@ -9072,7 +9073,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 0, y: 1}
-  m_AnchoredPosition: {x: 154, y: -22.000061}
+  m_AnchoredPosition: {x: 154, y: -22}
   m_SizeDelta: {x: 100, y: 40}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &2109847174

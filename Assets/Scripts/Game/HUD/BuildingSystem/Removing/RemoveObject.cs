@@ -12,8 +12,17 @@ public class RemoveObject : MonoBehaviour
     private Tilemap _floor;
     [SerializeField]
     private GameObject _selectedObjectPreview;
+    [SerializeField]
+    private GameObject _highlightPreview;
 
     private bool _isRemoving = true;
+
+    private void Start()
+    {
+        var highlightPreviewComponent = _highlightPreview.GetComponent<HighlightPreview>();
+
+        highlightPreviewComponent.SetRemoveTile();
+    }
 
     private void Update()
     {
@@ -67,6 +76,7 @@ public class RemoveObject : MonoBehaviour
         {
             _floor.SetTile(cellPosition, null);
         }
+
         placeTile.RecalculateNeighborsRotation(cellPosition);
     }
 
