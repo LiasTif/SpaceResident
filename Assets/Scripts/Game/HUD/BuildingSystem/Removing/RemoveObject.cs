@@ -15,12 +15,15 @@ public class RemoveObject : MonoBehaviour
     [SerializeField]
     private GameObject _highlightPreview;
 
+    private SelectedObjectPreview _selectedObjectPreviewComponent;
     private bool _isRemoving = true;
 
     private void Start()
     {
+        _selectedObjectPreviewComponent = _selectedObjectPreview.GetComponent<SelectedObjectPreview>();
         var highlightPreviewComponent = _highlightPreview.GetComponent<HighlightPreview>();
 
+        _selectedObjectPreviewComponent.Tile = null;
         highlightPreviewComponent.SetRemoveTile();
     }
 
@@ -61,9 +64,6 @@ public class RemoveObject : MonoBehaviour
     {
         Vector3Int cellPosition = GetMouseCellPosition();
 
-        var selectedObjectPreviewComponent = _selectedObjectPreview.GetComponent<SelectedObjectPreview>();
-        var placeTile = new PlaceTile(selectedObjectPreviewComponent);
-
         if (_objects.HasTile(cellPosition))
         {
             _objects.SetTile(cellPosition, null);
@@ -77,6 +77,8 @@ public class RemoveObject : MonoBehaviour
             _floor.SetTile(cellPosition, null);
         }
 
+        _selectedObjectPreviewComponent = _selectedObjectPreview.GetComponent<SelectedObjectPreview>();
+        var placeTile = new PlaceTile(_selectedObjectPreviewComponent);
         placeTile.RecalculateNeighborsRotation(cellPosition);
     }
 

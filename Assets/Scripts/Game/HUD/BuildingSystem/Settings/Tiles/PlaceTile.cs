@@ -33,6 +33,9 @@ public class PlaceTile
 
     public void Place()
     {
+        if (_selectedObjectPreview.Tile == null)
+            return;
+
         foreach (var position in _strategy.GetPositions(_start, _end))
         {
             var tileToPlace = GetTileBasedOnNeighbors(position);
@@ -147,6 +150,6 @@ public class PlaceTile
     private bool HasNeighbor(Vector3Int position)
     {
         var neighborTile = _selectedObjectPreview.ObjectTilemap.GetTile(position);
-        return neighborTile != null && neighborTile.GetType() == _selectedObjectPreview.Tile.GetType();
+        return neighborTile != null && _selectedObjectPreview.Tile != null && neighborTile.GetType() == _selectedObjectPreview.Tile.GetType();
     }
 }

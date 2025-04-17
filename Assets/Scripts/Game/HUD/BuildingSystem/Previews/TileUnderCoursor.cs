@@ -3,8 +3,8 @@ using UnityEngine.Tilemaps;
 
 public abstract class TileUnderCoursor : MonoBehaviour
 {
-    public Tilemap Tilemap;
     public Tile Tile;
+    public Tilemap Tilemap;
 
     protected Vector3Int previousTilePosition;
 

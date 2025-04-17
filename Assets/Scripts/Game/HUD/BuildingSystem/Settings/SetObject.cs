@@ -110,6 +110,9 @@ public class SetObject : MonoBehaviour
     private bool SetDefaultStrategy()
     {
         var tile = _objectPreviewComponent.Tile;
+        if (tile == null)
+            return false;
+
         Vector2 spriteSize = tile.sprite.bounds.size * tile.sprite.pixelsPerUnit;
 
         if (spriteSize.x != 32 || spriteSize.y != 32)

@@ -34,6 +34,9 @@ public class PlacePreview
 
     public void Place()
     {
+        if (_tile == null)
+            return;
+
         Vector2 spriteSize = _tile.sprite.bounds.size * _tile.sprite.pixelsPerUnit;
         int tileWidth = Mathf.CeilToInt(spriteSize.x / 32f);
         int tileHeight = Mathf.CeilToInt(spriteSize.y / 32f);

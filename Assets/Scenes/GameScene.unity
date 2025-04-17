@@ -598,6 +598,7 @@ MonoBehaviour:
   _objects: {fileID: 268898928}
   _floor: {fileID: 270502505}
   _selectedObjectPreview: {fileID: 324889276}
+  _highlightPreview: {fileID: 2084957200}
 --- !u!1 &131711233
 GameObject:
   m_ObjectHideFlags: 0
@@ -8962,6 +8963,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   Tilemap: {fileID: 1307676117}
   Tile: {fileID: 11400000, guid: 522c16c9316f14540bbf18811b3f1d76, type: 2}
+  BuildTile: {fileID: 11400000, guid: 522c16c9316f14540bbf18811b3f1d76, type: 2}
+  RemoveTile: {fileID: 11400000, guid: d226b860a8843f648ad11653ff8698a6, type: 2}
+  ReservedTile: {fileID: 11400000, guid: d226b860a8843f648ad11653ff8698a6, type: 2}
 --- !u!1 &2089366815
 GameObject:
   m_ObjectHideFlags: 0
