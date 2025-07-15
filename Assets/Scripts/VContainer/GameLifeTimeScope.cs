@@ -1,4 +1,6 @@
-public class GameLifeTimeScope
+using VContainer.Unity;
+
+public class GameLifeTimeScope : LifetimeScope
 {
     
 }
