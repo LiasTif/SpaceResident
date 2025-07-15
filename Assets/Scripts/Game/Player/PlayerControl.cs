@@ -15,7 +15,7 @@ public class PlayerControl : MonoBehaviour
 
     private PlayerInputActions _inputActions;
 
-    public float CurrentSpeed => _rb.velocity.magnitude;
+    public float CurrentSpeed => _rb.linearVelocity.magnitude;
 
     private void Awake()
     {
@@ -58,9 +58,9 @@ public class PlayerControl : MonoBehaviour
         MoveByInertia();
     }
 
-    private void Move() => _rb.velocity += _movSpeed * Time.fixedDeltaTime * _inputDirection;
-    private void Brake() => _rb.velocity = Vector2.MoveTowards(_rb.velocity, Vector2.zero, _movSpeed * Time.fixedDeltaTime);
-    private void MoveByInertia() => _rb.velocity *= _inertiaStrength;
+    private void Move() => _rb.linearVelocity += _movSpeed * Time.fixedDeltaTime * _inputDirection;
+    private void Brake() => _rb.linearVelocity = Vector2.MoveTowards(_rb.linearVelocity, Vector2.zero, _movSpeed * Time.fixedDeltaTime);
+    private void MoveByInertia() => _rb.linearVelocity *= _inertiaStrength;
 
     private void OnEnable() => _inputActions.Player.Enable();
     private void OnDisable() => _inputActions.Player.Disable();
