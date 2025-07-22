@@ -2,7 +2,7 @@ public class InitializeState : IGameState
 {
     public void Enter()
     {
-        throw new System.NotImplementedException();
+        SceneTransition.Transit("Initialization");
     }
 
     public void Exit()

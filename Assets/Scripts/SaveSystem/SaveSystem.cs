@@ -10,12 +10,12 @@ public class SaveSystem : IDataHandling, ISaveSystemNotifier
         throw new System.NotImplementedException();
     }
 
-    public void Load()
+    public void Save()
     {
         throw new System.NotImplementedException();
     }
 
-    public void RaiseLoad()
+    public void Load()
     {
         throw new System.NotImplementedException();
     }
@@ -25,7 +25,7 @@ public class SaveSystem : IDataHandling, ISaveSystemNotifier
         throw new System.NotImplementedException();
     }
 
-    public void Save()
+    public void RaiseLoad()
     {
         throw new System.NotImplementedException();
     }

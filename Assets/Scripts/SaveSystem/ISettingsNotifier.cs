@@ -1,3 +1,3 @@
-public interface ISettingsNotifier : IDataHandlingNotifier<ISettingParameters>
+public interface ISettingsNotifier : IDataHandlingNotifier<ISettingParametersChild>
 {
 }

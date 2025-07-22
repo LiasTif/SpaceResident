@@ -1,4 +1,4 @@
-public class AudioParams : ISettingParameters
+public class AudioParams : ISettingParametersChild
 {
     private float _masterVolume = 0.5f;
     private float _uiVolume = 0.5f;
